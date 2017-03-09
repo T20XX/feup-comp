@@ -1,0 +1,94 @@
+/**
+ * JavaCC template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
+ */
+options
+{
+  static = true;
+
+  LOOKAHEAD= 1;
+}
+
+PARSER_BEGIN(MyGrammar)
+package hw4;
+
+public class MyGrammar
+{
+  public static void main(String args []) throws ParseException
+  {
+    MyGrammar parser = new MyGrammar(System.in);
+    try
+    {
+      parser.start();
+      System.out.println("accept");
+    }
+    catch (Exception e)
+    {
+      System.out.println("reject");
+    }
+    catch (Error e)
+    {
+      System.out.println("reject");
+    }
+  }
+}
+
+PARSER_END(MyGrammar)
+
+SKIP :
+{
+  " "
+| "\r"
+| "\t"
+}
+
+TOKEN :
+{
+  < INT : ([ "0"-"9" ])+ >
+| < PLUS : "+" >
+| < MINUS : "-" >
+| < MULTIPLY : "*" >
+| < DIVIDE : "/" >
+| < LF : "\n" >
+}
+
+void start() :
+{}	
+{
+  expr() < LF >
+}
+
+void expr() :
+{}
+{
+  term() exprP()
+}
+
+void exprP() :
+{}
+{
+  (
+    (
+      < PLUS >
+    | < MINUS >
+    )
+    term() exprP()
+  )?
+}
+
+void term() :
+{}
+{
+  < INT > termP()
+}
+
+void termP() :
+{}
+{
+  (
+    (
+      < MINUS >
+    | < MULTIPLY >
+    )
+    < INT > termP()
+  )?
+}
