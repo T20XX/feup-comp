@@ -1,0 +1,46 @@
+/**
+ * JavaCC template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
+ */
+options
+{
+  static = true;
+}
+
+PARSER_BEGIN(Parser)
+package parser;
+
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.FileNotFoundException;
+
+public class Parser
+{
+  public static void main(String args []) throws ParseException, FileNotFoundException
+  {
+    InputStream input = System.in;
+    if(args.length > 0)
+	 	input = new FileInputStream(args[0]);
+   
+    Parser parser = new Parser(input);
+
+	parser.one_line();
+  }
+}
+
+PARSER_END(Parser)
+
+SKIP :
+{
+  " "
+| "\r"
+| "\t"
+}
+
+TOKEN : {
+  < PATTERN: "@" (["a"-"z","_","A"-"Z","0"-"9"])+ >
+  }
+
+void one_line() : {Token pattern;}
+{
+  	pattern = < PATTERN > { System.out.println(pattern.image); }
+}
