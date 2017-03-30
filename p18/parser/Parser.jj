@@ -23,7 +23,7 @@ public class Parser
    
     Parser parser = new Parser(input);
 
-	parser.one_line();
+	parser.Statement();
   }
 }
 
@@ -34,13 +34,88 @@ SKIP :
   " "
 | "\r"
 | "\t"
+| "\n"
 }
 
 TOKEN : {
-  < PATTERN: "@" (["a"-"z","_","A"-"Z","0"-"9"])+ >
+  < IF: "if" > |
+  < ELSE: "else" > |
+  
+  < PATTERN: "@" (["a"-"z","_","A"-"Z","0"-"9"])+ > |
+  < IDENTIFIER: ["a"-"z","_","A"-"Z"] (["a"-"z","_","A"-"Z","0"-"9"])* >  |
+  < INTEGER: (["0"-"9"])+ > |
+  < STRING: "\"" (["a"-"z","_","A"-"Z"])+ "\"" > | //INCOMPLETE
+  < BASIC_TYPE: ("byte" | "short" | "char" | "int" | "long" | "float" | "double" | "boolean") > |
+  < ASSIGNMENT_OPERATOR: ("+" | "-" | "*" | "/" | "&" | "|" | "^" | "%" | "<<" | ">>" | ">>>")? "=" > |
+  < INFIX_OPERATOR: ("||" | "&&" | "|" | "^" | "&" | "==" | "!=" | "<" | ">" | "<=" | ">=" | "<<" | ">>" | ">>>" | "+" | "-" | "*" | "/" | "%") > |
+  < PREFIX_OPERATOR: ("+" | "-" | "~" | "!" | "++" | "--") >
   }
 
-void one_line() : {Token pattern;}
+//INCOMPLETE
+void Statement() : {}
 {
-  	pattern = < PATTERN > { System.out.println(pattern.image); }
+  	( StatementExpression() ";") |
+    ( < IF > ParExpression() Statement() ( < ELSE > Statement())? )
+}
+
+void StatementExpression() : {}
+{
+  	Expression()
+}
+
+
+void ParExpression() : {}
+{
+  	"(" Expression() ")"
+}
+
+void Expression() : {}
+{
+  	Expression1() (< ASSIGNMENT_OPERATOR > Expression1())?
+}
+
+//INCOMPLETE
+void Expression1() : {}
+{
+  	Expression2()
+}
+
+void Expression2() : {}
+{
+  	Expression3() (Expression2Rest())?
+}
+
+//INCOMPLETE
+void Expression2Rest() : {}
+{
+  	< INFIX_OPERATOR > Expression3()
+}
+
+//INCOMPLETE
+void Expression3() : {}
+{
+  	(  	  Primary() |
+  	  ( < PREFIX_OPERATOR > Expression3() )
+  	)
+}
+
+//INCOMPLETE
+void Primary() : {}
+{
+  	(
+  	  Literal() | ParExpression() | Identifier() | < PATTERN >  	)
+}
+
+//INCOMPLETE
+void Literal() : {}
+{
+  	(
+  	  < INTEGER > | < STRING >
+  	)
+}
+
+//INCOMPLETE
+void Identifier() : {}
+{
+	< IDENTIFIER > ("." < IDENTIFIER >)*
 }
