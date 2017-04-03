@@ -7,7 +7,7 @@ options
 }
 
 PARSER_BEGIN(Parser)
-package parser;
+package patternsGrammar;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
