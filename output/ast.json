@@ -2,24 +2,24 @@
   "nodetype": "Root",
   "compilation_units": [{
     "nodetype": "CompilationUnit",
-    "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java",
+    "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java",
     "types": [{
       "nodetype": "Class",
-      "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:2",
+      "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:2",
       "name": "TestSpoon",
       "package": "",
       "members": [
         {
         "nodetype": "Constructor",
-        "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:1",
+        "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:1",
         "name": "<init>",
         "parameters": [],
         "body": {
           "nodetype": "Block",
-          "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:2",
+          "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:2",
           "statements": [{
             "nodetype": "Invocation",
-            "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:2",
+            "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:2",
             "executable": {
               "nodetype": "ExecutableReference",
               "name": "<init>",
@@ -41,7 +41,7 @@
         },
         {
         "nodetype": "Method",
-        "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:4",
+        "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:4",
         "name": "main",
         "type": {
           "nodetype": "TypeReference",
@@ -49,7 +49,7 @@
           },
         "parameters": [{
           "nodetype": "Parameter",
-          "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:4",
+          "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:4",
           "name": "args",
           "type": {
             "nodetype": "ArrayTypeReference",
@@ -62,11 +62,11 @@
           }],
         "body": {
           "nodetype": "Block",
-          "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:4",
+          "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:4",
           "statements": [
             {
             "nodetype": "LocalVariable",
-            "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:6",
+            "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:6",
             "name": "a",
             "type": {
               "nodetype": "TypeReference",
@@ -74,7 +74,7 @@
               },
             "init": {
               "nodetype": "Literal",
-              "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:6",
+              "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:6",
               "value": 1,
               "type": {
                 "nodetype": "TypeReference",
@@ -84,7 +84,7 @@
             },
             {
             "nodetype": "LocalVariable",
-            "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:7",
+            "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:7",
             "name": "b",
             "type": {
               "nodetype": "TypeReference",
@@ -92,7 +92,7 @@
               },
             "init": {
               "nodetype": "Literal",
-              "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:7",
+              "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:7",
               "value": 2,
               "type": {
                 "nodetype": "TypeReference",
@@ -102,10 +102,10 @@
             },
             {
             "nodetype": "If",
-            "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:8",
+            "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:8",
             "condition": {
               "nodetype": "BinaryOperator",
-              "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:8",
+              "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:8",
               "type": {
                 "nodetype": "TypeReference",
                 "name": "boolean"
@@ -113,7 +113,7 @@
               "operator": "<",
               "lhs": {
                 "nodetype": "VariableRead",
-                "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:8",
+                "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:8",
                 "var": {
                   "nodetype": "LocalVariableReference",
                   "name": "a",
@@ -125,7 +125,7 @@
                 },
               "rhs": {
                 "nodetype": "VariableRead",
-                "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:8",
+                "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:8",
                 "var": {
                   "nodetype": "LocalVariableReference",
                   "name": "b",
@@ -138,10 +138,10 @@
               },
             "then": {
               "nodetype": "Block",
-              "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:8",
+              "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:8",
               "statements": [{
                 "nodetype": "LocalVariable",
-                "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:9",
+                "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:9",
                 "name": "c",
                 "type": {
                   "nodetype": "TypeReference",
@@ -149,7 +149,7 @@
                   },
                 "init": {
                   "nodetype": "VariableRead",
-                  "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:9",
+                  "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:9",
                   "var": {
                     "nodetype": "LocalVariableReference",
                     "name": "a",
@@ -163,10 +163,10 @@
               },
             "else": {
               "nodetype": "Block",
-              "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:10",
+              "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:10",
               "statements": [{
                 "nodetype": "LocalVariable",
-                "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:11",
+                "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:11",
                 "name": "c",
                 "type": {
                   "nodetype": "TypeReference",
@@ -174,7 +174,7 @@
                   },
                 "init": {
                   "nodetype": "VariableRead",
-                  "location": "/Users/Telmo/Documents/GitHub/comp/TestSpoon.java:11",
+                  "location": "/Users/Telmo/Documents/GitHub/comp/input/TestSpoon.java:11",
                   "var": {
                     "nodetype": "LocalVariableReference",
                     "name": "b",
