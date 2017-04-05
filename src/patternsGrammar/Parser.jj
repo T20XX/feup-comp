@@ -33,6 +33,30 @@ public class Parser/*@bgen(jjtree)*/implements ParserTreeConstants/*@egen*/
   }
 }
 
+/*int eval(SimpleNode node) {
+	if(node.jjtGetNumChildren() == 0) // leaf node with integer value
+		return node.val;
+	else if(node.jjtGetNumChildren() == 1) // only one child
+		return this.eval((SimpleNode) node.jjtGetChild(0));
+
+	SimpleNode lhs = (SimpleNode) node.jjtGetChild(0); //left child
+	SimpleNode rhs = (SimpleNode) node.jjtGetChild(1); // right child
+
+	switch(node.Op) {
+ 		case MyConstants.ADD : return eval( lhs ) + eval( rhs );
+	 	case MyConstants.SUB : return eval( lhs ) - eval( rhs );
+ 		case MyConstants.MUL : return eval( lhs ) * eval( rhs );
+ 		case MyConstants.DIV : return eval( lhs ) / eval( rhs );
+
+		default : // abort
+
+
+	System.out.println("Operador ilegal!");
+	System.exit(1);
+	}
+	return 0;
+}*/
+
 PARSER_END(Parser)
 
 SKIP :
@@ -329,7 +353,7 @@ void Primary() : {/*@bgen(jjtree) Primary */
         try {
 /*@egen*/
   	(
-  	  Literal() | ParExpression() | Identifier() | < PATTERN >  	)/*@bgen(jjtree)*/
+  	  Literal() | ParExpression() | Identifier() | Pattern()  	)/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -344,6 +368,23 @@ void Primary() : {/*@bgen(jjtree) Primary */
             throw (ParseException)jjte000;
           }
           throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}
+
+void Pattern() : {/*@bgen(jjtree) Pattern */
+  SimpleNode jjtn000 = new SimpleNode(JJTPATTERN);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) Pattern */
+        try {
+/*@egen*/
+	< PATTERN >/*@bgen(jjtree)*/
         } finally {
           if (jjtc000) {
             jjtree.closeNodeScope(jjtn000, true);
