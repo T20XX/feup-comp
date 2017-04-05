@@ -6,3 +6,8 @@
 /Token.java
 /TokenMgrError.java
 /PatternsParserConstants.java
+/Parser.jj
+/JJTParserState.java
+/Node.java
+/ParserTreeConstants.java
+/SimpleNode.java
