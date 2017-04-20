@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,6 +14,10 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
+
+import patternsGrammar.ParseException;
+import patternsGrammar.Parser;
+import patternsGrammar.SimpleNode;
 
 public class PAT {
 
@@ -28,6 +33,19 @@ public class PAT {
 
 		String DSLFilePath = args[0];
 		String JavaFilePath = args[1];
+		
+		InputStream input = System.in;
+	    if(args.length > 0)
+			try {
+				input = new FileInputStream("input" + FS + DSLFilePath);
+				   
+			    Parser parser = new Parser(input);
+			    SimpleNode root = parser.Statement();
+			    root.dump("");
+			} catch (FileNotFoundException | ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 
 		// Generate AST from java code 
 		ProcessBuilder pb = new ProcessBuilder("java", "-jar", ".." + FS + "lib" + FS + "spoon2ast.jar", ".." + FS + "input" + FS + JavaFilePath)
