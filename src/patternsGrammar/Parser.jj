@@ -72,6 +72,7 @@ SKIP :
 TOKEN : {
   < IF: "if" > |
   < ELSE: "else" > |
+  < WHILE: "while" > |
   
   < PATTERN: "@" (["a"-"z","_","A"-"Z","0"-"9"])+ > |
   
@@ -102,8 +103,9 @@ BetterNode Statement() : {/*@bgen(jjtree) Statement */
 /*@egen*/
   	(  	  	( StatementExpression() ";") |
     	( < IF > ParExpression() Statement()
-    		( < ELSE > Statement())?
-    	)
+    		( < ELSE > Statement() )?
+    	) |
+    	( < WHILE > ParExpression() Statement() )
     )/*@bgen(jjtree)*/
     {
       jjtree.closeNodeScope(jjtn000, true);

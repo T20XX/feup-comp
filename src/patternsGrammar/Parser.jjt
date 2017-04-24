@@ -68,6 +68,7 @@ SKIP :
 TOKEN : {
   < IF: "if" > |
   < ELSE: "else" > |
+  < WHILE: "while" > |
   
   < PATTERN: "@" (["a"-"z","_","A"-"Z","0"-"9"])+ > |
   
@@ -92,8 +93,9 @@ BetterNode Statement() : {}
 {
   	(  	  	( StatementExpression() ";") |
     	( < IF > ParExpression() Statement()
-    		( < ELSE > Statement())?
-    	)
+    		( < ELSE > Statement() )?
+    	) |
+    	( < WHILE > ParExpression() Statement() )
     )
     {return jjtThis;} 
 }
