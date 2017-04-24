@@ -5,6 +5,7 @@
 options
 {
   static = true;
+                            
 }
 
 PARSER_BEGIN(Parser)
@@ -26,7 +27,8 @@ public class Parser/*@bgen(jjtree)*/implements ParserTreeConstants/*@egen*/
 	 	input = new FileInputStream(args[0]);
    
     Parser parser = new Parser(input);
-    SimpleNode root = parser.Statement();
+    //SimpleNode root = parser.Statement();
+    BetterNode root = parser.Statement();
 
     root.dump("");
 	
@@ -72,26 +74,37 @@ TOKEN : {
   < ELSE: "else" > |
   
   < PATTERN: "@" (["a"-"z","_","A"-"Z","0"-"9"])+ > |
-  < IDENTIFIER: ["a"-"z","_","A"-"Z"] (["a"-"z","_","A"-"Z","0"-"9"])* >  |
-  < INTEGER: (["0"-"9"])+ > |
-  < STRING: "\"" (["a"-"z","_","A"-"Z"])+ "\"" > | //INCOMPLETE
+  
+  
+  < INTEGER: ("-")? (["0"-"9"])+ > |
+  < STRING: "\"" (~["\""])+ "\"" > | //INCOMPLETE
+  < FLOAT: ("-")? (["0"-"9"])+ "." (["0"-"9"])+> |
+  < CHAR: "'" (~["\""]) "'" >  |	
+  < BOOLEAN: ("true" | "false")>  |
+  < NULL: "null">  |
+  
   < BASIC_TYPE: ("byte" | "short" | "char" | "int" | "long" | "float" | "double" | "boolean") > |
   < ASSIGNMENT_OPERATOR: ("+" | "-" | "*" | "/" | "&" | "|" | "^" | "%" | "<<" | ">>" | ">>>")? "=" > |
   < INFIX_OPERATOR: ("||" | "&&" | "|" | "^" | "&" | "==" | "!=" | "<" | ">" | "<=" | ">=" | "<<" | ">>" | ">>>" | "+" | "-" | "*" | "/" | "%") > |
-  < PREFIX_OPERATOR: ("+" | "-" | "~" | "!" | "++" | "--") >
+  < PREFIX_OPERATOR: ("+" | "-" | "~" | "!" | "++" | "--") > |
+
+  < IDENTIFIER: ["a"-"z","_","A"-"Z"] (["a"-"z","_","A"-"Z","0"-"9"])* >
   }
 
 //INCOMPLETE
-SimpleNode Statement() : {/*@bgen(jjtree) Statement */
-  SimpleNode jjtn000 = new SimpleNode(JJTSTATEMENT);
+BetterNode Statement() : {/*@bgen(jjtree) Statement */
+  BetterNode jjtn000 = new BetterNode(JJTSTATEMENT);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}
 {/*@bgen(jjtree) Statement */
         try {
 /*@egen*/
-  	(  	  ( StatementExpression() ";") |
-    ( < IF > ParExpression() Statement() ( < ELSE > Statement())? ))/*@bgen(jjtree)*/
+  	(  	  	( StatementExpression() ";") |
+    	( < IF > ParExpression() Statement()
+    		( < ELSE > Statement())?
+    	)
+    )/*@bgen(jjtree)*/
     {
       jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
@@ -121,7 +134,7 @@ SimpleNode Statement() : {/*@bgen(jjtree) Statement */
 }
 
 void StatementExpression() : {/*@bgen(jjtree) StatementExpression */
-  SimpleNode jjtn000 = new SimpleNode(JJTSTATEMENTEXPRESSION);
+  BetterNode jjtn000 = new BetterNode(JJTSTATEMENTEXPRESSION);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}	
@@ -151,9 +164,11 @@ void StatementExpression() : {/*@bgen(jjtree) StatementExpression */
 /*@egen*/
 }
 
-
+/**
+ * A condition
+ */
 void ParExpression() : {/*@bgen(jjtree) ParExpression */
-  SimpleNode jjtn000 = new SimpleNode(JJTPAREXPRESSION);
+  BetterNode jjtn000 = new BetterNode(JJTPAREXPRESSION);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}
@@ -184,7 +199,7 @@ void ParExpression() : {/*@bgen(jjtree) ParExpression */
 }
 
 void Expression() : {/*@bgen(jjtree) Expression */
-  SimpleNode jjtn000 = new SimpleNode(JJTEXPRESSION);
+  BetterNode jjtn000 = new BetterNode(JJTEXPRESSION);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}
@@ -216,7 +231,7 @@ void Expression() : {/*@bgen(jjtree) Expression */
 
 //INCOMPLETE
 void Expression1() : {/*@bgen(jjtree) Expression1 */
-  SimpleNode jjtn000 = new SimpleNode(JJTEXPRESSION1);
+  BetterNode jjtn000 = new BetterNode(JJTEXPRESSION1);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}
@@ -247,7 +262,7 @@ void Expression1() : {/*@bgen(jjtree) Expression1 */
 }
 
 void Expression2() : {/*@bgen(jjtree) Expression2 */
-  SimpleNode jjtn000 = new SimpleNode(JJTEXPRESSION2);
+  BetterNode jjtn000 = new BetterNode(JJTEXPRESSION2);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}
@@ -279,7 +294,7 @@ void Expression2() : {/*@bgen(jjtree) Expression2 */
 
 //INCOMPLETE
 void Expression2Rest() : {/*@bgen(jjtree) Expression2Rest */
-  SimpleNode jjtn000 = new SimpleNode(JJTEXPRESSION2REST);
+  BetterNode jjtn000 = new BetterNode(JJTEXPRESSION2REST);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}
@@ -311,7 +326,7 @@ void Expression2Rest() : {/*@bgen(jjtree) Expression2Rest */
 
 //INCOMPLETE
 void Expression3() : {/*@bgen(jjtree) Expression3 */
-  SimpleNode jjtn000 = new SimpleNode(JJTEXPRESSION3);
+  BetterNode jjtn000 = new BetterNode(JJTEXPRESSION3);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}
@@ -345,7 +360,7 @@ void Expression3() : {/*@bgen(jjtree) Expression3 */
 
 //INCOMPLETE
 void Primary() : {/*@bgen(jjtree) Primary */
-  SimpleNode jjtn000 = new SimpleNode(JJTPRIMARY);
+  BetterNode jjtn000 = new BetterNode(JJTPRIMARY);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}
@@ -377,33 +392,74 @@ void Primary() : {/*@bgen(jjtree) Primary */
 }
 
 void Pattern() : {/*@bgen(jjtree) Pattern */
-  SimpleNode jjtn000 = new SimpleNode(JJTPATTERN);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
+                  BetterNode jjtn000 = new BetterNode(JJTPATTERN);
+                  boolean jjtc000 = true;
+                  jjtree.openNodeScope(jjtn000);
+/*@egen*/Token t;}
 {/*@bgen(jjtree) Pattern */
         try {
 /*@egen*/
-	< PATTERN >/*@bgen(jjtree)*/
+	t=< PATTERN >/*@bgen(jjtree)*/
+                      {
+                        jjtree.closeNodeScope(jjtn000, true);
+                        jjtc000 = false;
+                      }
+/*@egen*/ { jjtn000.value = t.image;}/*@bgen(jjtree)*/
         } finally {
           if (jjtc000) {
             jjtree.closeNodeScope(jjtn000, true);
           }
         }
 /*@egen*/
+	  
 }
 
 //INCOMPLETE
 void Literal() : {/*@bgen(jjtree) Literal */
-  SimpleNode jjtn000 = new SimpleNode(JJTLITERAL);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
+                  BetterNode jjtn000 = new BetterNode(JJTLITERAL);
+                  boolean jjtc000 = true;
+                  jjtree.openNodeScope(jjtn000);
+/*@egen*/Token t;}
 {/*@bgen(jjtree) Literal */
         try {
 /*@egen*/
   	(
-  	  < INTEGER > | < STRING >
+		t=< INTEGER >/*@bgen(jjtree)*/
+                              {
+                                jjtree.closeNodeScope(jjtn000, true);
+                                jjtc000 = false;
+                              }
+/*@egen*/ {	jjtn000.value = new Integer(t.image); 	} |
+  	   	t=< FLOAT >/*@bgen(jjtree)*/
+                            {
+                              jjtree.closeNodeScope(jjtn000, true);
+                              jjtc000 = false;
+                            }
+/*@egen*/ { jjtn000.value = new Float(t.image);} |
+  	   	t=< STRING >/*@bgen(jjtree)*/
+                             {
+                               jjtree.closeNodeScope(jjtn000, true);
+                               jjtc000 = false;
+                             }
+/*@egen*/ { jjtn000.value = t.image;} |
+  	   	t=< CHAR >/*@bgen(jjtree)*/
+                           {
+                             jjtree.closeNodeScope(jjtn000, true);
+                             jjtc000 = false;
+                           }
+/*@egen*/ { jjtn000.value = t.image.charAt(1);} |
+  	   	t=< BOOLEAN >/*@bgen(jjtree)*/
+                              {
+                                jjtree.closeNodeScope(jjtn000, true);
+                                jjtc000 = false;
+                              }
+/*@egen*/ { jjtn000.value = new Boolean(t.image);} |
+  	   	t=< NULL >/*@bgen(jjtree)*/
+                           {
+                             jjtree.closeNodeScope(jjtn000, true);
+                             jjtc000 = false;
+                           }
+/*@egen*/ { }
   	)/*@bgen(jjtree)*/
         } finally {
           if (jjtc000) {
@@ -415,14 +471,17 @@ void Literal() : {/*@bgen(jjtree) Literal */
 
 //INCOMPLETE
 void Identifier() : {/*@bgen(jjtree) Identifier */
-  SimpleNode jjtn000 = new SimpleNode(JJTIDENTIFIER);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
+                     BetterNode jjtn000 = new BetterNode(JJTIDENTIFIER);
+                     boolean jjtc000 = true;
+                     jjtree.openNodeScope(jjtn000);
+/*@egen*/Token t;}
 {/*@bgen(jjtree) Identifier */
         try {
 /*@egen*/
-	< IDENTIFIER > ("." < IDENTIFIER >)*/*@bgen(jjtree)*/
+	t=< IDENTIFIER >{ jjtn000.value = t.image;}
+	(	"."
+		t=< IDENTIFIER >{ jjtn000.value += "." + t.image;}
+	)*/*@bgen(jjtree)*/
         } finally {
           if (jjtc000) {
             jjtree.closeNodeScope(jjtn000, true);

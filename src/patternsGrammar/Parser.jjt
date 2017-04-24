@@ -4,6 +4,7 @@
 options
 {
   static = true;
+  NODE_CLASS = "BetterNode";
 }
 
 PARSER_BEGIN(Parser)
@@ -22,7 +23,8 @@ public class Parser
 	 	input = new FileInputStream(args[0]);
    
     Parser parser = new Parser(input);
-    SimpleNode root = parser.Statement();
+    //SimpleNode root = parser.Statement();
+    BetterNode root = parser.Statement();
 
     root.dump("");
 	
@@ -68,20 +70,31 @@ TOKEN : {
   < ELSE: "else" > |
   
   < PATTERN: "@" (["a"-"z","_","A"-"Z","0"-"9"])+ > |
-  < IDENTIFIER: ["a"-"z","_","A"-"Z"] (["a"-"z","_","A"-"Z","0"-"9"])* >  |
-  < INTEGER: (["0"-"9"])+ > |
-  < STRING: "\"" (["a"-"z","_","A"-"Z"])+ "\"" > | //INCOMPLETE
+  
+  
+  < INTEGER: ("-")? (["0"-"9"])+ > |
+  < STRING: "\"" (~["\""])+ "\"" > | //INCOMPLETE
+  < FLOAT: ("-")? (["0"-"9"])+ "." (["0"-"9"])+> |
+  < CHAR: "'" (~["\""]) "'" >  |	
+  < BOOLEAN: ("true" | "false")>  |
+  < NULL: "null">  |
+  
   < BASIC_TYPE: ("byte" | "short" | "char" | "int" | "long" | "float" | "double" | "boolean") > |
   < ASSIGNMENT_OPERATOR: ("+" | "-" | "*" | "/" | "&" | "|" | "^" | "%" | "<<" | ">>" | ">>>")? "=" > |
   < INFIX_OPERATOR: ("||" | "&&" | "|" | "^" | "&" | "==" | "!=" | "<" | ">" | "<=" | ">=" | "<<" | ">>" | ">>>" | "+" | "-" | "*" | "/" | "%") > |
-  < PREFIX_OPERATOR: ("+" | "-" | "~" | "!" | "++" | "--") >
+  < PREFIX_OPERATOR: ("+" | "-" | "~" | "!" | "++" | "--") > |
+
+  < IDENTIFIER: ["a"-"z","_","A"-"Z"] (["a"-"z","_","A"-"Z","0"-"9"])* >
   }
 
 //INCOMPLETE
-SimpleNode Statement() : {}
+BetterNode Statement() : {}
 {
-  	(  	  ( StatementExpression() ";") |
-    ( < IF > ParExpression() Statement() ( < ELSE > Statement())? ))
+  	(  	  	( StatementExpression() ";") |
+    	( < IF > ParExpression() Statement()
+    		( < ELSE > Statement())?
+    	)
+    )
     {return jjtThis;} 
 }
 
@@ -90,7 +103,9 @@ void StatementExpression() : {}
   	Expression()
 }
 
-
+/**
+ * A condition
+ */
 void ParExpression() : {}
 {
   	"(" Expression() ")"
@@ -133,21 +148,30 @@ void Primary() : {}
   	  Literal() | ParExpression() | Identifier() | Pattern()  	)
 }
 
-void Pattern() : {}
+void Pattern() : {Token t;}
 {
-	< PATTERN >
+	t=< PATTERN > { jjtThis.value = t.image;}
+	  
 }
 
 //INCOMPLETE
-void Literal() : {}
+void Literal() : {Token t;}
 {
   	(
-  	  < INTEGER > | < STRING >
+		t=< INTEGER > {	jjtThis.value = new Integer(t.image); 	} |
+  	   	t=< FLOAT > { jjtThis.value = new Float(t.image);} |
+  	   	t=< STRING > { jjtThis.value = t.image;} |
+  	   	t=< CHAR > { jjtThis.value = t.image.charAt(1);} |
+  	   	t=< BOOLEAN > { jjtThis.value = new Boolean(t.image);} |
+  	   	t=< NULL > { }
   	)
 }
 
 //INCOMPLETE
-void Identifier() : {}
+void Identifier() : {Token t;}
 {
-	< IDENTIFIER > ("." < IDENTIFIER >)*
+	t=< IDENTIFIER >{ jjtThis.value = t.image;}
+	(	"."
+		t=< IDENTIFIER >{ jjtThis.value += "." + t.image;}
+	)*
 }
