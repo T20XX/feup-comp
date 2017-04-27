@@ -114,7 +114,7 @@ BetterNode Statement() : {}
 
 void StatementExpression() : {}	
 {
-  	Expression() ";"
+  	AssignmentExpression() ";"
 }
 
 /**
@@ -122,36 +122,38 @@ void StatementExpression() : {}
  */
 void ParExpression() : {}
 {
-  	"(" Expression() ")"
+  	"(" AssignmentExpression() ")"
 }
 
-void Expression() : {}
+void AssignmentExpression() : {Token t;}
 {
-  	Expression1() (< ASSIGNMENT_OPERATOR > Expression1())?
+  	ConditionalExpression()
+  	(
+  	  	t=< ASSIGNMENT_OPERATOR >{ jjtThis.value = t.image; }
+  	  	ConditionalExpression()
+  	)?
+}
+
+void ConditionalExpression() : {}
+{
+  	AtomicExpression() (ConditionalExpressionRest())?
 }
 
 //INCOMPLETE
-void Expression1() : {}
+void ConditionalExpressionRest() : {Token t;}
 {
-  	Expression2()
-}
-
-void Expression2() : {}
-{
-  	Expression3() (Expression2Rest())?
+  	t=< INFIX_OPERATOR > { jjtThis.value = t.image; }
+  	AtomicExpression()
 }
 
 //INCOMPLETE
-void Expression2Rest() : {}
-{
-  	< INFIX_OPERATOR > Expression3()
-}
-
-//INCOMPLETE
-void Expression3() : {}
+void AtomicExpression() : {Token t;}
 {
   	(  	  Primary() |
-  	  ( < PREFIX_OPERATOR > Expression3() )
+  	  (
+  	    	t=< PREFIX_OPERATOR > { jjtThis.value = t.image; }
+  	  		AtomicExpression()
+  	  )
   	)
 }
 

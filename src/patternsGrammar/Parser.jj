@@ -186,7 +186,7 @@ void StatementExpression() : {/*@bgen(jjtree) StatementExpression */
 {/*@bgen(jjtree) StatementExpression */
         try {
 /*@egen*/
-  	Expression() ";"/*@bgen(jjtree)*/
+  	AssignmentExpression() ";"/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -220,7 +220,7 @@ void ParExpression() : {/*@bgen(jjtree) ParExpression */
 {/*@bgen(jjtree) ParExpression */
         try {
 /*@egen*/
-  	"(" Expression() ")"/*@bgen(jjtree)*/
+  	"(" AssignmentExpression() ")"/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -243,15 +243,50 @@ void ParExpression() : {/*@bgen(jjtree) ParExpression */
 /*@egen*/
 }
 
-void Expression() : {/*@bgen(jjtree) Expression */
-  BetterNode jjtn000 = new BetterNode(JJTEXPRESSION);
+void AssignmentExpression() : {/*@bgen(jjtree) AssignmentExpression */
+                               BetterNode jjtn000 = new BetterNode(JJTASSIGNMENTEXPRESSION);
+                               boolean jjtc000 = true;
+                               jjtree.openNodeScope(jjtn000);
+/*@egen*/Token t;}
+{/*@bgen(jjtree) AssignmentExpression */
+        try {
+/*@egen*/
+  	ConditionalExpression()
+  	(
+  	  	t=< ASSIGNMENT_OPERATOR >{ jjtn000.value = t.image; }
+  	  	ConditionalExpression()
+  	)?/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}
+
+void ConditionalExpression() : {/*@bgen(jjtree) ConditionalExpression */
+  BetterNode jjtn000 = new BetterNode(JJTCONDITIONALEXPRESSION);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}
-{/*@bgen(jjtree) Expression */
+{/*@bgen(jjtree) ConditionalExpression */
         try {
 /*@egen*/
-  	Expression1() (< ASSIGNMENT_OPERATOR > Expression1())?/*@bgen(jjtree)*/
+  	AtomicExpression() (ConditionalExpressionRest())?/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -275,46 +310,16 @@ void Expression() : {/*@bgen(jjtree) Expression */
 }
 
 //INCOMPLETE
-void Expression1() : {/*@bgen(jjtree) Expression1 */
-  BetterNode jjtn000 = new BetterNode(JJTEXPRESSION1);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) Expression1 */
+void ConditionalExpressionRest() : {/*@bgen(jjtree) ConditionalExpressionRest */
+                                    BetterNode jjtn000 = new BetterNode(JJTCONDITIONALEXPRESSIONREST);
+                                    boolean jjtc000 = true;
+                                    jjtree.openNodeScope(jjtn000);
+/*@egen*/Token t;}
+{/*@bgen(jjtree) ConditionalExpressionRest */
         try {
 /*@egen*/
-  	Expression2()/*@bgen(jjtree)*/
-        } catch (Throwable jjte000) {
-          if (jjtc000) {
-            jjtree.clearNodeScope(jjtn000);
-            jjtc000 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte000 instanceof RuntimeException) {
-            throw (RuntimeException)jjte000;
-          }
-          if (jjte000 instanceof ParseException) {
-            throw (ParseException)jjte000;
-          }
-          throw (Error)jjte000;
-        } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
-        }
-/*@egen*/
-}
-
-void Expression2() : {/*@bgen(jjtree) Expression2 */
-  BetterNode jjtn000 = new BetterNode(JJTEXPRESSION2);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) Expression2 */
-        try {
-/*@egen*/
-  	Expression3() (Expression2Rest())?/*@bgen(jjtree)*/
+  	t=< INFIX_OPERATOR > { jjtn000.value = t.image; }
+  	AtomicExpression()/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -338,48 +343,19 @@ void Expression2() : {/*@bgen(jjtree) Expression2 */
 }
 
 //INCOMPLETE
-void Expression2Rest() : {/*@bgen(jjtree) Expression2Rest */
-  BetterNode jjtn000 = new BetterNode(JJTEXPRESSION2REST);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) Expression2Rest */
-        try {
-/*@egen*/
-  	< INFIX_OPERATOR > Expression3()/*@bgen(jjtree)*/
-        } catch (Throwable jjte000) {
-          if (jjtc000) {
-            jjtree.clearNodeScope(jjtn000);
-            jjtc000 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte000 instanceof RuntimeException) {
-            throw (RuntimeException)jjte000;
-          }
-          if (jjte000 instanceof ParseException) {
-            throw (ParseException)jjte000;
-          }
-          throw (Error)jjte000;
-        } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
-        }
-/*@egen*/
-}
-
-//INCOMPLETE
-void Expression3() : {/*@bgen(jjtree) Expression3 */
-  BetterNode jjtn000 = new BetterNode(JJTEXPRESSION3);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) Expression3 */
+void AtomicExpression() : {/*@bgen(jjtree) AtomicExpression */
+                           BetterNode jjtn000 = new BetterNode(JJTATOMICEXPRESSION);
+                           boolean jjtc000 = true;
+                           jjtree.openNodeScope(jjtn000);
+/*@egen*/Token t;}
+{/*@bgen(jjtree) AtomicExpression */
         try {
 /*@egen*/
   	(  	  Primary() |
-  	  ( < PREFIX_OPERATOR > Expression3() )
+  	  (
+  	    	t=< PREFIX_OPERATOR > { jjtn000.value = t.image; }
+  	  		AtomicExpression()
+  	  )
   	)/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
