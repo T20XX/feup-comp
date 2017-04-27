@@ -69,6 +69,7 @@ TOKEN : {
   < IF: "if" > |
   < ELSE: "else" > |
   < WHILE: "while" > |
+  < RETURN: "return" > |
   
   < PATTERN: "@" (["a"-"z","_","A"-"Z","0"-"9"])+ > |
   
@@ -102,11 +103,14 @@ BetterNode Start() : { }
 //INCOMPLETE
 BetterNode Statement() : {}
 {
-  	(  	  	( StatementExpression() ) |
+  	(
+  	  	( Block() ) { jjtThis.value = "block"; } |  	  	( StatementExpression() ) { jjtThis.value = "statement"; }|
     	( < IF > ParExpression() Statement()
     		( < ELSE > Statement() )?
-    	) |
-    	( < WHILE > ParExpression() Statement() )
+    	) { jjtThis.value = "if"; }|
+    	( < WHILE > ParExpression() Statement() ) { jjtThis.value = "while"; }|
+    	( < RETURN > StatementExpression() ) { jjtThis.value = "return"; }
+    	
     )
 
     {return jjtThis;} 
@@ -117,9 +121,11 @@ void StatementExpression() : {}
   	AssignmentExpression() ";"
 }
 
-/**
- * A condition
- */
+void Block() : {}
+{
+  	"{" (Statement())+ "}"
+}
+
 void ParExpression() : {}
 {
   	"(" AssignmentExpression() ")"

@@ -73,6 +73,7 @@ TOKEN : {
   < IF: "if" > |
   < ELSE: "else" > |
   < WHILE: "while" > |
+  < RETURN: "return" > |
   
   < PATTERN: "@" (["a"-"z","_","A"-"Z","0"-"9"])+ > |
   
@@ -143,11 +144,14 @@ BetterNode Statement() : {/*@bgen(jjtree) Statement */
 {/*@bgen(jjtree) Statement */
         try {
 /*@egen*/
-  	(  	  	( StatementExpression() ) |
+  	(
+  	  	( Block() ) { jjtn000.value = "block"; } |  	  	( StatementExpression() ) { jjtn000.value = "statement"; }|
     	( < IF > ParExpression() Statement()
     		( < ELSE > Statement() )?
-    	) |
-    	( < WHILE > ParExpression() Statement() )
+    	) { jjtn000.value = "if"; }|
+    	( < WHILE > ParExpression() Statement() ) { jjtn000.value = "while"; }|
+    	( < RETURN > StatementExpression() ) { jjtn000.value = "return"; }
+    	
     )/*@bgen(jjtree)*/
     {
       jjtree.closeNodeScope(jjtn000, true);
@@ -209,9 +213,37 @@ void StatementExpression() : {/*@bgen(jjtree) StatementExpression */
 /*@egen*/
 }
 
-/**
- * A condition
- */
+void Block() : {/*@bgen(jjtree) Block */
+  BetterNode jjtn000 = new BetterNode(JJTBLOCK);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) Block */
+        try {
+/*@egen*/
+  	"{" (Statement())+ "}"/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}
+
 void ParExpression() : {/*@bgen(jjtree) ParExpression */
   BetterNode jjtn000 = new BetterNode(JJTPAREXPRESSION);
   boolean jjtc000 = true;
