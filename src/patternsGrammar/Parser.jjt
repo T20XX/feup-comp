@@ -24,7 +24,7 @@ public class Parser
    
     Parser parser = new Parser(input);
     //SimpleNode root = parser.Statement();
-    BetterNode root = parser.Statement();
+    BetterNode root = parser.Start();
 
     root.dump("");
 	
@@ -88,21 +88,33 @@ TOKEN : {
   < IDENTIFIER: ["a"-"z","_","A"-"Z"] (["a"-"z","_","A"-"Z","0"-"9"])* >
   }
 
+
+BetterNode Start() : { }
+{
+
+ (Statement())+ <EOF>
+ 
+    {return jjtThis;} 
+}
+
+
+
 //INCOMPLETE
 BetterNode Statement() : {}
 {
-  	(  	  	( StatementExpression() ";") |
+  	(  	  	( StatementExpression() ) |
     	( < IF > ParExpression() Statement()
     		( < ELSE > Statement() )?
     	) |
     	( < WHILE > ParExpression() Statement() )
     )
+
     {return jjtThis;} 
 }
 
 void StatementExpression() : {}	
 {
-  	Expression()
+  	Expression() ";"
 }
 
 /**

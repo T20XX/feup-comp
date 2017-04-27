@@ -28,7 +28,7 @@ public class Parser/*@bgen(jjtree)*/implements ParserTreeConstants/*@egen*/
    
     Parser parser = new Parser(input);
     //SimpleNode root = parser.Statement();
-    BetterNode root = parser.Statement();
+    BetterNode root = parser.Start();
 
     root.dump("");
 	
@@ -92,6 +92,48 @@ TOKEN : {
   < IDENTIFIER: ["a"-"z","_","A"-"Z"] (["a"-"z","_","A"-"Z","0"-"9"])* >
   }
 
+
+BetterNode Start() : {/*@bgen(jjtree) Start */
+  BetterNode jjtn000 = new BetterNode(JJTSTART);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/ }
+{/*@bgen(jjtree) Start */
+ try {
+/*@egen*/
+
+ (Statement())+ <EOF>/*@bgen(jjtree)*/
+    {
+      jjtree.closeNodeScope(jjtn000, true);
+      jjtc000 = false;
+    }
+/*@egen*/
+ 
+    {return jjtn000;}/*@bgen(jjtree)*/
+ } catch (Throwable jjte000) {
+   if (jjtc000) {
+     jjtree.clearNodeScope(jjtn000);
+     jjtc000 = false;
+   } else {
+     jjtree.popNode();
+   }
+   if (jjte000 instanceof RuntimeException) {
+     throw (RuntimeException)jjte000;
+   }
+   if (jjte000 instanceof ParseException) {
+     throw (ParseException)jjte000;
+   }
+   throw (Error)jjte000;
+ } finally {
+   if (jjtc000) {
+     jjtree.closeNodeScope(jjtn000, true);
+   }
+ }
+/*@egen*/ 
+}
+
+
+
 //INCOMPLETE
 BetterNode Statement() : {/*@bgen(jjtree) Statement */
   BetterNode jjtn000 = new BetterNode(JJTSTATEMENT);
@@ -101,7 +143,7 @@ BetterNode Statement() : {/*@bgen(jjtree) Statement */
 {/*@bgen(jjtree) Statement */
         try {
 /*@egen*/
-  	(  	  	( StatementExpression() ";") |
+  	(  	  	( StatementExpression() ) |
     	( < IF > ParExpression() Statement()
     		( < ELSE > Statement() )?
     	) |
@@ -112,6 +154,7 @@ BetterNode Statement() : {/*@bgen(jjtree) Statement */
       jjtc000 = false;
     }
 /*@egen*/
+
     {return jjtn000;}/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
@@ -143,7 +186,7 @@ void StatementExpression() : {/*@bgen(jjtree) StatementExpression */
 {/*@bgen(jjtree) StatementExpression */
         try {
 /*@egen*/
-  	Expression()/*@bgen(jjtree)*/
+  	Expression() ";"/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
