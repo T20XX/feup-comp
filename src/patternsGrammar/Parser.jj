@@ -68,8 +68,8 @@ SKIP :
 | "\t"
 | "\n"
 }
-
 TOKEN : {
+
   < IF: "if" > |
   < ELSE: "else" > |
   < WHILE: "while" > |
@@ -90,7 +90,9 @@ TOKEN : {
   < INFIX_OPERATOR: ("||" | "&&" | "|" | "^" | "&" | "==" | "!=" | "<" | ">" | "<=" | ">=" | "<<" | ">>" | ">>>" | "+" | "-" | "*" | "/" | "%") > |
   < PREFIX_OPERATOR: ("+" | "-" | "~" | "!" | "++" | "--") > |
 
-  < IDENTIFIER: ["a"-"z","_","A"-"Z"] (["a"-"z","_","A"-"Z","0"-"9"])* >
+  < IDENTIFIER: ["a"-"z","_","A"-"Z"] (["a"-"z","_","A"-"Z","0"-"9"])* > |
+  < ENDJAVA : "@@">|
+  < STARTJAVA: "@@" (["a"-"z","_","A"-"Z","0"-"9"])+ >
   }
 
 
@@ -100,10 +102,10 @@ BetterNode Start() : {/*@bgen(jjtree) Start */
   jjtree.openNodeScope(jjtn000);
 /*@egen*/ }
 {/*@bgen(jjtree) Start */
- try {
+        try {
 /*@egen*/
 
- (Statement())+ <EOF>/*@bgen(jjtree)*/
+ 	(Rule())+ <EOF>/*@bgen(jjtree)*/
     {
       jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
@@ -111,28 +113,60 @@ BetterNode Start() : {/*@bgen(jjtree) Start */
 /*@egen*/
  
     {return jjtn000;}/*@bgen(jjtree)*/
- } catch (Throwable jjte000) {
-   if (jjtc000) {
-     jjtree.clearNodeScope(jjtn000);
-     jjtc000 = false;
-   } else {
-     jjtree.popNode();
-   }
-   if (jjte000 instanceof RuntimeException) {
-     throw (RuntimeException)jjte000;
-   }
-   if (jjte000 instanceof ParseException) {
-     throw (ParseException)jjte000;
-   }
-   throw (Error)jjte000;
- } finally {
-   if (jjtc000) {
-     jjtree.closeNodeScope(jjtn000, true);
-   }
- }
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
 /*@egen*/ 
 }
 
+void Rule(): {/*@bgen(jjtree) Rule */
+               BetterNode jjtn000 = new BetterNode(JJTRULE);
+               boolean jjtc000 = true;
+               jjtree.openNodeScope(jjtn000);
+/*@egen*/ Token t;}
+{/*@bgen(jjtree) Rule */
+        try {
+/*@egen*/
+	(t=< STARTJAVA > { jjtn000.value = t.image; })
+	(Statement())+
+	< ENDJAVA >/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}
 
 
 //INCOMPLETE
@@ -179,7 +213,7 @@ BetterNode Statement() : {/*@bgen(jjtree) Statement */
             jjtree.closeNodeScope(jjtn000, true);
           }
         }
-/*@egen*/ 
+/*@egen*/
 }
 
 void StatementExpression() : {/*@bgen(jjtree) StatementExpression */
@@ -221,7 +255,7 @@ void Block() : {/*@bgen(jjtree) Block */
 {/*@bgen(jjtree) Block */
         try {
 /*@egen*/
-  	"{" (Statement())+ "}"/*@bgen(jjtree)*/
+  	"{" (Statement())* "}"/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);

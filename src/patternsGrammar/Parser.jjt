@@ -64,8 +64,8 @@ SKIP :
 | "\t"
 | "\n"
 }
-
 TOKEN : {
+
   < IF: "if" > |
   < ELSE: "else" > |
   < WHILE: "while" > |
@@ -86,18 +86,26 @@ TOKEN : {
   < INFIX_OPERATOR: ("||" | "&&" | "|" | "^" | "&" | "==" | "!=" | "<" | ">" | "<=" | ">=" | "<<" | ">>" | ">>>" | "+" | "-" | "*" | "/" | "%") > |
   < PREFIX_OPERATOR: ("+" | "-" | "~" | "!" | "++" | "--") > |
 
-  < IDENTIFIER: ["a"-"z","_","A"-"Z"] (["a"-"z","_","A"-"Z","0"-"9"])* >
+  < IDENTIFIER: ["a"-"z","_","A"-"Z"] (["a"-"z","_","A"-"Z","0"-"9"])* > |
+  < ENDJAVA : "@@">|
+  < STARTJAVA: "@@" (["a"-"z","_","A"-"Z","0"-"9"])+ >
   }
 
 
 BetterNode Start() : { }
 {
 
- (Statement())+ <EOF>
+ 	(Rule())+ <EOF>
  
     {return jjtThis;} 
 }
 
+void Rule(): { Token t;}
+{
+	(t=< STARTJAVA > { jjtThis.value = t.image; })
+	(Statement())+
+	< ENDJAVA >
+}
 
 
 //INCOMPLETE
@@ -113,7 +121,7 @@ BetterNode Statement() : {}
     	
     )
 
-    {return jjtThis;} 
+    {return jjtThis;}
 }
 
 void StatementExpression() : {}	
@@ -123,7 +131,7 @@ void StatementExpression() : {}
 
 void Block() : {}
 {
-  	"{" (Statement())+ "}"
+  	"{" (Statement())* "}"
 }
 
 void ParExpression() : {}
