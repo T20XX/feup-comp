@@ -33,18 +33,20 @@ public class PAT {
 
 		String DSLFilePath = args[0];
 		String JavaFilePath = args[1];
-		
+
+		SimpleNode root = null;
 		InputStream input = System.in;
-	    if(args.length > 0)
+		if(args.length > 0)
 			try {
 				input = new FileInputStream("input" + FS + DSLFilePath);
-				   
-			    Parser parser = new Parser(input);
-			    SimpleNode root = parser.Statement();
-			    root.dump("");
+
+				Parser parser = new Parser(input);
+				root = parser.Statement();
+				root.dump("");
 			} catch (FileNotFoundException | ParseException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
+				return;
 			}
 
 		// Generate AST from java code 
@@ -78,10 +80,26 @@ public class PAT {
 			System.out.println();
 		}
 
+		System.out.println(root.jjtGetValue());
+		//PATTERNS
+		for(int i=0; i < root.jjtGetNumChildren(); i++){
+			((SimpleNode) root.jjtGetChild(i)).dump("");
+		}
+
+		//CICLO DE COMPARAR ASTS!
+		for(ArrayList<Map<String, Object>> codeSection : codeSections){
+			for(Map<String, Object> statement : codeSection){
+				if(sameType(statement.get("nodetype").toString(),root.jjtGetValue().toString())){
+					System.out.println("ENCONTREI UM IF");
+				}
+			}
+			System.out.println();
+		}
+
 	}
 
 	@SuppressWarnings("unchecked")
-	public static ArrayList<ArrayList<Map<String, Object>>> getCodeSectionsFromRoot(Map<String, Object> jsonJavaRootObject) {
+	private static ArrayList<ArrayList<Map<String, Object>>> getCodeSectionsFromRoot(Map<String, Object> jsonJavaRootObject) {
 		ArrayList<ArrayList<Map<String, Object>>> statements = new ArrayList<ArrayList<Map<String, Object>>>();
 
 		//Compilation Units
@@ -106,6 +124,21 @@ public class PAT {
 
 		return statements;
 	}
+
+	private static SimpleNode cleanRoot(SimpleNode root) {
+		SimpleNode cleanedRoot = new SimpleNode(0);
+
+		for(int i=0; i < root.jjtGetNumChildren(); i++){
+			if(((SimpleNode) root.jjtGetChild(i)).jjtGetValue() != null)
+				cleanedRoot.jjtAddChild(root.jjtGetChild(i),0);
+			cleanRoot((SimpleNode) root.jjtGetChild(i));
+		}
+
+		return cleanedRoot;
+	}
+
+
+
 
 	/**
 	 * Given a File object, returns a String with the contents of the file.
@@ -152,5 +185,15 @@ public class PAT {
 		}
 
 		return stringBuilder.toString();
+	}
+
+	private static boolean sameType(String javaType, String dslType){
+		if(javaType.equals("If") && dslType.equals("if"))
+			return true;
+		else if(javaType.equals("LocalVariable") && dslType.equals("="))
+			return true;
+
+
+		return false;
 	}
 }

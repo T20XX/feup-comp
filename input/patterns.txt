@@ -1,3 +1,5 @@
+variavel = 3;
+
 if(@a = 32)
 	@a = 5;
 else
