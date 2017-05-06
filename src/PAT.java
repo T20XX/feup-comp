@@ -14,7 +14,13 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import jsonParser.adapters.MyNodeDeserializer;
+import jsonParser.containers.BasicNode;
+import jsonParser.containers.Expression;
+import jsonParser.containers.Reference;
+import jsonParser.containers.Root;
 import patternsGrammar.ParseException;
 import patternsGrammar.Parser;
 import patternsGrammar.SimpleNode;
@@ -66,8 +72,21 @@ public class PAT {
 		String JavaASTPath = "." + FS + "output" + FS + "ast.json";
 
 		File json = new File(JavaASTPath);
+		
+		MyNodeDeserializer typeAdapter = new MyNodeDeserializer();
+		
+		Gson gson = new GsonBuilder()
+				.registerTypeAdapter(BasicNode.class, typeAdapter)
+				.registerTypeAdapter(Reference.class, typeAdapter)
+				.registerTypeAdapter(Expression.class, typeAdapter)
+				.setPrettyPrinting()
+				.create();
+				
+		Root jsonRootObject = gson.fromJson(read(json), Root.class);
+		System.out.println("Root: \n" +  gson.toJson(jsonRootObject));
+		
 
-		Map<String, Object> jsonJavaRootObject = new Gson().fromJson(read(json), Map.class);
+		Map<String, Object> jsonJavaRootObject = gson.fromJson(read(json), Map.class);
 
 		//System.out.println("JSON:\n" + jsonJavaRootObject);
 
