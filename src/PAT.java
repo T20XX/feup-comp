@@ -79,7 +79,7 @@ public class PAT {
 		findIf(cu);
 		
 		System.out.println("AST String: ");
-		System.out.println(getASTString(root, ""));
+		System.out.println(getASTString(root));
 		
 		if(true)
 		{
@@ -297,12 +297,9 @@ public class PAT {
 		cu.accept(visitor);
 	}
 	
-	public static String getASTString(SimpleNode node, String prefix) {
+	public static patternParser.BasicNode getASTString(SimpleNode node) {
 		
-		String ret = "";
-		
-		ret = ret + node.toString();
-		prefix = prefix + "-";
+		patternParser.BasicNode ret = patternParser.BasicNode.parseFromString(node.toString());
 		
 		
 		for (int i = 0; i < node.jjtGetNumChildren(); i++)
@@ -310,9 +307,7 @@ public class PAT {
 			SimpleNode n = (SimpleNode) node.jjtGetChild(i);
 			if(n != null)
 			{
-				ret = ret + "\n";
-				ret = ret + prefix;
-				ret = ret + getASTString(n, prefix);
+				ret.addChild(getASTString(n));
 			}
 		}
 		
