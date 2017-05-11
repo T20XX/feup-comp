@@ -35,11 +35,12 @@ import jsonParser.containers.Root;
 import patternsGrammar.ParseException;
 import patternsGrammar.Parser;
 import patternsGrammar.SimpleNode;
+import utils.MyFileReader;
 
 public class PAT {
 
 	public static final String FS = System.getProperty("file.separator");
-	public static final String DEFAULT_CHAR_SET = "UTF-8";
+	
 
 	public static void main(String[] args) {
 
@@ -77,6 +78,9 @@ public class PAT {
 		
 		findIf(cu);
 		
+		System.out.println("AST String: ");
+		System.out.println(getASTString(root, ""));
+		
 		if(true)
 		{
 			return;
@@ -110,7 +114,7 @@ public class PAT {
 				.setPrettyPrinting()
 				.create();
 				
-		Root jsonRootObject = gsonRead.fromJson(read(json), Root.class);
+		Root jsonRootObject = gsonRead.fromJson(MyFileReader.read(json), Root.class);
 		
 		Gson gsonWrite = new GsonBuilder()
 				.setPrettyPrinting()
@@ -122,7 +126,7 @@ public class PAT {
 		
 		
 
-		Map<String, Object> jsonJavaRootObject = gsonRead.fromJson(read(json), Map.class);
+		Map<String, Object> jsonJavaRootObject = gsonRead.fromJson(MyFileReader.read(json), Map.class);
 
 		//System.out.println("JSON:\n" + jsonJavaRootObject);
 
@@ -195,52 +199,6 @@ public class PAT {
 
 
 
-	/**
-	 * Given a File object, returns a String with the contents of the file.
-	 * 
-	 * <p>
-	 * If an error occurs (ex.: the File argument does not represent a file) returns null and logs the cause.
-	 * 
-	 * @param file
-	 *            a File object representing a file.
-	 * @return a String with the contents of the file.
-	 */
-	public static String read(File file) {
-		// Check null argument. If null, it would raise and exception and stop
-		// the program when used to create the File object.
-		if (file == null) {
-			Logger.getLogger("info").info("Input 'file' is null.");
-			return null;
-		}
-
-		StringBuilder stringBuilder = new StringBuilder();
-
-		// Try to read the contents of the file into the StringBuilder
-
-		try (final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file),
-				DEFAULT_CHAR_SET))) {
-
-			// Read first character. It can't be cast to "char", otherwise the
-			// -1 will be converted in a character.
-			// First test for -1, then cast.
-			int intChar = bufferedReader.read();
-			while (intChar != -1) {
-				char character = (char) intChar;
-				stringBuilder.append(character);
-				intChar = bufferedReader.read();
-			}
-
-		} catch (FileNotFoundException ex) {
-			Logger.getLogger("info").info("FileNotFoundException: " + ex.getMessage());
-			return null;
-
-		} catch (IOException ex) {
-			Logger.getLogger("info").info("IOException: " + ex.getMessage());
-			return null;
-		}
-
-		return stringBuilder.toString();
-	}
 
 	private static boolean sameType(String javaType, String dslType){
 		if(javaType.equals("If") && dslType.equals("if"))
@@ -338,4 +296,27 @@ public class PAT {
 		
 		cu.accept(visitor);
 	}
+	
+	public static String getASTString(SimpleNode node, String prefix) {
+		
+		String ret = "";
+		
+		ret = ret + node.toString();
+		prefix = prefix + "-";
+		
+		
+		for (int i = 0; i < node.jjtGetNumChildren(); i++)
+		{
+			SimpleNode n = (SimpleNode) node.jjtGetChild(i);
+			if(n != null)
+			{
+				ret = ret + "\n";
+				ret = ret + prefix;
+				ret = ret + getASTString(n, prefix);
+			}
+		}
+		
+		return ret;
+		
+	  }
 }

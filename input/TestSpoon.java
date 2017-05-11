@@ -3,6 +3,7 @@ public class TestSpoon {
 
 	int abc = 1;
 	int edf = 2;
+	int variavel = 3;
 
 	public static void main(String[] args) {
 
@@ -10,7 +11,7 @@ public class TestSpoon {
 		int a = 1;
 		int b = 2;
 
-		if (casasa < b) {
+		if (a < b) {
 			int c = (a > b ? a : b);
 
 		} else {
