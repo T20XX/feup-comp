@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class CompilationUnit extends BasicNode {
 	
-	ArrayList<BasicNode> types;
+	protected ArrayList<BasicNode> types;
 	
 
 }

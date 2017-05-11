@@ -2,8 +2,8 @@ package jsonParser.containers;
 
 public abstract class BasicNode {
 	
-	private String nodetype;
-	private String location;
+	protected String nodetype;
+	protected String location;
     // private List<Comment> comments;
 
 }

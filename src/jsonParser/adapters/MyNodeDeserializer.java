@@ -41,9 +41,11 @@ public class MyNodeDeserializer implements JsonDeserializer<BasicNode> {
 		// You Only need the concrete classes, NOT the abstract ones
 		BINARYOPERATOR(BinaryOperator.class),
 		COMPILATIONUNIT(CompilationUnit.class),
+		CONSTRUCTOR(Constructor.class),
 		EXPRESSION(Expression.class),
 		IF(If.class),
 		LITERAL(Literal.class),
+		METHOD(Method.class),
 		CLASS(jsonParser.containers.MyClass.class),
 		ROOT(Root.class),
 		TYPEREFERENCE(TypeReference.class),

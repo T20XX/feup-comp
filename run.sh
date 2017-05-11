@@ -6,8 +6,8 @@ javacc -OUTPUT_DIRECTORY="src/patternsGrammar" ./src/patternsGrammar/Parser.jj
 
 #COMPILE JAVA
 mkdir -p ./bin
-javac -d "bin" -cp "lib/gson-2.8.0.jar" ./src/PAT.java ./src/jsonParser/*.java ./src/patternsGrammar/*.java
+javac -g -d "bin" -cp "lib/*" ./src/PAT.java ./src/jsonParser/adapters/*.java ./src/jsonParser/containers/*.java ./src/patternsGrammar/*.java
 
 #EXECUTE PAT
 echo "Running..."
-java -cp "bin:lib/gson-2.8.0.jar" PAT patterns.txt TestSpoon.java
+java -cp "bin:lib/*" PAT patterns.txt TestSpoon.java

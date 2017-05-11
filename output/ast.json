@@ -2,24 +2,24 @@
   "nodetype": "Root",
   "compilation_units": [{
     "nodetype": "CompilationUnit",
-    "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java",
+    "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java",
     "types": [{
       "nodetype": "Class",
-      "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:2",
+      "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:2",
       "name": "TestSpoon",
       "package": "",
       "members": [
         {
         "nodetype": "Constructor",
-        "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:1",
+        "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:1",
         "name": "<init>",
         "parameters": [],
         "body": {
           "nodetype": "Block",
-          "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:2",
+          "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:2",
           "statements": [{
             "nodetype": "Invocation",
-            "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:2",
+            "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:2",
             "executable": {
               "nodetype": "ExecutableReference",
               "name": "<init>",
@@ -40,8 +40,44 @@
           }
         },
         {
+        "nodetype": "Field",
+        "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:4",
+        "name": "abc",
+        "type": {
+          "nodetype": "TypeReference",
+          "name": "int"
+          },
+        "init": {
+          "nodetype": "Literal",
+          "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:4",
+          "value": 1,
+          "type": {
+            "nodetype": "TypeReference",
+            "name": "int"
+            }
+          }
+        },
+        {
+        "nodetype": "Field",
+        "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:5",
+        "name": "edf",
+        "type": {
+          "nodetype": "TypeReference",
+          "name": "int"
+          },
+        "init": {
+          "nodetype": "Literal",
+          "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:5",
+          "value": 2,
+          "type": {
+            "nodetype": "TypeReference",
+            "name": "int"
+            }
+          }
+        },
+        {
         "nodetype": "Method",
-        "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:4",
+        "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:7",
         "name": "main",
         "type": {
           "nodetype": "TypeReference",
@@ -49,7 +85,7 @@
           },
         "parameters": [{
           "nodetype": "Parameter",
-          "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:4",
+          "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:7",
           "name": "args",
           "type": {
             "nodetype": "ArrayTypeReference",
@@ -62,11 +98,11 @@
           }],
         "body": {
           "nodetype": "Block",
-          "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:4",
+          "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:7",
           "statements": [
             {
             "nodetype": "LocalVariable",
-            "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:6",
+            "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:9",
             "name": "variavel",
             "type": {
               "nodetype": "TypeReference",
@@ -74,7 +110,7 @@
               },
             "init": {
               "nodetype": "Literal",
-              "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:6",
+              "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:9",
               "value": 3,
               "type": {
                 "nodetype": "TypeReference",
@@ -84,7 +120,7 @@
             },
             {
             "nodetype": "LocalVariable",
-            "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:7",
+            "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:10",
             "name": "a",
             "type": {
               "nodetype": "TypeReference",
@@ -92,7 +128,7 @@
               },
             "init": {
               "nodetype": "Literal",
-              "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:7",
+              "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:10",
               "value": 1,
               "type": {
                 "nodetype": "TypeReference",
@@ -102,7 +138,7 @@
             },
             {
             "nodetype": "LocalVariable",
-            "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:8",
+            "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:11",
             "name": "b",
             "type": {
               "nodetype": "TypeReference",
@@ -110,7 +146,7 @@
               },
             "init": {
               "nodetype": "Literal",
-              "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:8",
+              "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:11",
               "value": 2,
               "type": {
                 "nodetype": "TypeReference",
@@ -120,10 +156,10 @@
             },
             {
             "nodetype": "If",
-            "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:9",
+            "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:12",
             "condition": {
               "nodetype": "BinaryOperator",
-              "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:9",
+              "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:12",
               "type": {
                 "nodetype": "TypeReference",
                 "name": "boolean"
@@ -131,7 +167,7 @@
               "operator": "<",
               "lhs": {
                 "nodetype": "VariableRead",
-                "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:9",
+                "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:12",
                 "var": {
                   "nodetype": "LocalVariableReference",
                   "name": "a",
@@ -143,7 +179,7 @@
                 },
               "rhs": {
                 "nodetype": "VariableRead",
-                "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:9",
+                "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:12",
                 "var": {
                   "nodetype": "LocalVariableReference",
                   "name": "b",
@@ -156,10 +192,10 @@
               },
             "then": {
               "nodetype": "Block",
-              "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:9",
+              "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:12",
               "statements": [{
                 "nodetype": "LocalVariable",
-                "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:10",
+                "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:13",
                 "name": "c",
                 "type": {
                   "nodetype": "TypeReference",
@@ -167,7 +203,7 @@
                   },
                 "init": {
                   "nodetype": "VariableRead",
-                  "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:10",
+                  "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:13",
                   "var": {
                     "nodetype": "LocalVariableReference",
                     "name": "a",
@@ -181,10 +217,10 @@
               },
             "else": {
               "nodetype": "Block",
-              "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:12",
+              "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:15",
               "statements": [{
                 "nodetype": "LocalVariable",
-                "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:13",
+                "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:16",
                 "name": "c",
                 "type": {
                   "nodetype": "TypeReference",
@@ -192,7 +228,7 @@
                   },
                 "init": {
                   "nodetype": "VariableRead",
-                  "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:13",
+                  "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:16",
                   "var": {
                     "nodetype": "LocalVariableReference",
                     "name": "b",
@@ -207,10 +243,10 @@
             },
             {
             "nodetype": "If",
-            "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:17",
+            "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:20",
             "condition": {
               "nodetype": "BinaryOperator",
-              "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:17",
+              "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:20",
               "type": {
                 "nodetype": "TypeReference",
                 "name": "boolean"
@@ -218,7 +254,7 @@
               "operator": "<",
               "lhs": {
                 "nodetype": "VariableRead",
-                "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:17",
+                "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:20",
                 "var": {
                   "nodetype": "LocalVariableReference",
                   "name": "a",
@@ -230,7 +266,7 @@
                 },
               "rhs": {
                 "nodetype": "VariableRead",
-                "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:17",
+                "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:20",
                 "var": {
                   "nodetype": "LocalVariableReference",
                   "name": "b",
@@ -243,10 +279,10 @@
               },
             "then": {
               "nodetype": "Block",
-              "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:17",
+              "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:20",
               "statements": [{
                 "nodetype": "LocalVariable",
-                "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:18",
+                "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:21",
                 "name": "c",
                 "type": {
                   "nodetype": "TypeReference",
@@ -254,7 +290,7 @@
                   },
                 "init": {
                   "nodetype": "VariableRead",
-                  "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:18",
+                  "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:21",
                   "var": {
                     "nodetype": "LocalVariableReference",
                     "name": "a",
@@ -268,10 +304,10 @@
               },
             "else": {
               "nodetype": "Block",
-              "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:19",
+              "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:22",
               "statements": [{
                 "nodetype": "LocalVariable",
-                "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:20",
+                "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:23",
                 "name": "c",
                 "type": {
                   "nodetype": "TypeReference",
@@ -279,7 +315,7 @@
                   },
                 "init": {
                   "nodetype": "VariableRead",
-                  "location": "/usr/users2/mieic2014/up201405840/comp/input/TestSpoon.java:20",
+                  "location": "/home/jazz/MyRepos/FEUP/3a-2s/feup-comp/input/TestSpoon.java:23",
                   "var": {
                     "nodetype": "LocalVariableReference",
                     "name": "b",
