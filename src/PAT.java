@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -32,6 +33,7 @@ import jsonParser.containers.BasicNode;
 import jsonParser.containers.Member;
 import jsonParser.containers.Reference;
 import jsonParser.containers.Root;
+import patternParser.BasicNode.Type;
 import patternsGrammar.ParseException;
 import patternsGrammar.Parser;
 import patternsGrammar.SimpleNode;
@@ -40,6 +42,15 @@ import utils.MyFileReader;
 public class PAT {
 
 	public static final String FS = System.getProperty("file.separator");
+	public static Map<patternParser.BasicNode.Type, Integer> typeToNodeType;
+	
+	private static void populateTypeToNodeType(){
+		
+		typeToNodeType = new HashMap<>();
+		
+		typeToNodeType.put(patternParser.BasicNode.Type.AssignmentExpression, ASTNode.VARIABLE_DECLARATION_FRAGMENT);
+		
+	}
 	
 
 	public static void main(String[] args) {
@@ -76,16 +87,10 @@ public class PAT {
 			e.printStackTrace();
 		}
 		
-		findIf(cu);
 		
-		if(true)
-		{
-			return;
-		}
+		populateTypeToNodeType();
 		
-		
-		System.out.println("AST String: ");
-		System.out.println(getASTString(root));
+		findPattern(cu, getAST(root));
 		
 		
 
@@ -125,7 +130,13 @@ public class PAT {
 				.create();
 		System.out.println("Root: \n" +  gsonWrite.toJson(jsonRootObject));
 		
-				
+		System.out.println(jsonRootObject.searchTreeForType(new ArrayList<>(), "Root"));
+	
+		if(true)
+		{
+			return;
+		}
+		
 
 		Map<String, Object> jsonJavaRootObject = gsonRead.fromJson(MyFileReader.read(json), Map.class);
 
@@ -229,6 +240,27 @@ public class PAT {
 		
 	}
 	
+	private static void findPattern(CompilationUnit cu, patternParser.BasicNode node){
+		
+		if(cu == null)
+		{
+			System.out.println("Given CompilationUnit is null.");
+			return;
+		}
+		
+		patternParser.BasicNode.Type type = node.getType();
+		
+		MyASTVisitor visitor = new MyASTVisitor(node);
+		
+		cu.accept(visitor);
+		
+		for(int i = 0; i < node.getChildren().size(); i++)
+		{
+			findPattern(cu, node.getChildren().get(i));
+		}
+		
+	}
+	
 	private static void findIf(CompilationUnit cu)
 	{
 		if(cu == null)
@@ -274,6 +306,9 @@ public class PAT {
 			}
 			
 			*/
+			
+			
+			
 			public boolean visit(IfStatement node) {
 				Expression expr = node.getExpression();
 				
@@ -299,7 +334,7 @@ public class PAT {
 		cu.accept(visitor);
 	}
 	
-	public static patternParser.BasicNode getASTString(SimpleNode node) {
+	public static patternParser.BasicNode getAST(SimpleNode node) {
 		
 		patternParser.BasicNode ret = patternParser.BasicNode.parseFromString(node.toString());
 		
@@ -309,11 +344,12 @@ public class PAT {
 			SimpleNode n = (SimpleNode) node.jjtGetChild(i);
 			if(n != null)
 			{
-				ret.addChild(getASTString(n));
+				ret.addChild(getAST(n));
 			}
 		}
 		
 		return ret;
 		
 	  }
+
 }

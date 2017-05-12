@@ -1,6 +1,7 @@
 package patternParser;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class BasicNode {
 	
@@ -15,9 +16,9 @@ public class BasicNode {
 		Literal;
 	}
 	
-	Type type;
-	String value;
-	ArrayList<BasicNode> children;
+	protected Type type;
+	protected String value;
+	protected ArrayList<BasicNode> children;
 	
 	public BasicNode(Type type, String value)
     {
@@ -60,8 +61,18 @@ public class BasicNode {
 		return new BasicNode(type, value);
 	}
 	
-	
-	
+	public Type getType() {
+		return type;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public ArrayList<BasicNode> getChildren() {
+		return children;
+	}
+
 	@Override
 	public String toString() {
 		return "BasicNode [type=" + type + ", value=" + value + ", children=" + children + "]";
