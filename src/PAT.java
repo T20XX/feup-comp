@@ -78,13 +78,16 @@ public class PAT {
 		
 		findIf(cu);
 		
-		System.out.println("AST String: ");
-		System.out.println(getASTString(root));
-		
 		if(true)
 		{
 			return;
 		}
+		
+		
+		System.out.println("AST String: ");
+		System.out.println(getASTString(root));
+		
+		
 
 		// Generate AST from java code 
 		ProcessBuilder pb = new ProcessBuilder("java", "-jar", ".." + FS + "lib" + FS + "spoon2ast.jar", ".." + FS + "input" + FS + JavaFilePath)
@@ -123,8 +126,6 @@ public class PAT {
 		System.out.println("Root: \n" +  gsonWrite.toJson(jsonRootObject));
 		
 				
-		
-		
 
 		Map<String, Object> jsonJavaRootObject = gsonRead.fromJson(MyFileReader.read(json), Map.class);
 
@@ -235,6 +236,7 @@ public class PAT {
 			System.out.println("Given CompilationUnit is null.");
 			return;
 		}
+	
 
 		ASTVisitor visitor = (new ASTVisitor() {
 			 

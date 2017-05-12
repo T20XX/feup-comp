@@ -43,6 +43,7 @@ public class MyNodeDeserializer implements JsonDeserializer<BasicNode> {
 		COMPILATIONUNIT(CompilationUnit.class),
 		CONSTRUCTOR(Constructor.class),
 		EXPRESSION(Expression.class),
+		FIELD(Field.class),
 		IF(If.class),
 		LITERAL(Literal.class),
 		METHOD(Method.class),
