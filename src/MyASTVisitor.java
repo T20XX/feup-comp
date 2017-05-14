@@ -37,6 +37,7 @@ public class MyASTVisitor extends ASTVisitor {
 		if(this.nodeToFind.getType() == BasicNode.Type.AssignmentExpression)
 		{
 			this.correspondingNode = node;
+			System.out.println("Found an assignment!: " + node.getName() +"="+ node.getInitializer());
 		}
 		
 		return false; // do not visit children

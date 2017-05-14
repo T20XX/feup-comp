@@ -112,19 +112,19 @@ void Rule(): { Token t;}
 BetterNode Statement() : {}
 {
   	(
-  	  	( Block() ) { jjtThis.value = "block"; } |  	  	( StatementExpression() ) { jjtThis.value = "statement"; }|
+  	  	( Block() ) { jjtThis.value = "block"; } |  	  	( Expression() ) { jjtThis.value = "statement"; }|
     	( < IF > ParExpression() Statement()
     		( < ELSE > Statement() )?
     	) { jjtThis.value = "if"; }|
     	( < WHILE > ParExpression() Statement() ) { jjtThis.value = "while"; }|
-    	( < RETURN > StatementExpression() ) { jjtThis.value = "return"; }
+    	( < RETURN > Expression() ) { jjtThis.value = "return"; }
     	
     )
 
     {return jjtThis;}
 }
 
-void StatementExpression() : {}	
+void Expression() : {}	
 {
   	AssignmentExpression() ";"
 }
@@ -141,11 +141,18 @@ void ParExpression() : {}
 
 void AssignmentExpression() : {Token t;}
 {
-  	ConditionalExpression()
-  	(
-  	  	t=< ASSIGNMENT_OPERATOR >{ jjtThis.value = t.image; }
-  	  	ConditionalExpression()
-  	)?
+  	VariableDeclaratorId() 
+
+  	t=< ASSIGNMENT_OPERATOR >{ jjtThis.value = t.image; }
+
+  	Primary()
+}
+
+void VariableDeclaratorId() : { }
+{
+
+  Identifier()
+
 }
 
 void ConditionalExpression() : {}

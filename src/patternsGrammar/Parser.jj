@@ -179,12 +179,12 @@ BetterNode Statement() : {/*@bgen(jjtree) Statement */
         try {
 /*@egen*/
   	(
-  	  	( Block() ) { jjtn000.value = "block"; } |  	  	( StatementExpression() ) { jjtn000.value = "statement"; }|
+  	  	( Block() ) { jjtn000.value = "block"; } |  	  	( Expression() ) { jjtn000.value = "statement"; }|
     	( < IF > ParExpression() Statement()
     		( < ELSE > Statement() )?
     	) { jjtn000.value = "if"; }|
     	( < WHILE > ParExpression() Statement() ) { jjtn000.value = "while"; }|
-    	( < RETURN > StatementExpression() ) { jjtn000.value = "return"; }
+    	( < RETURN > Expression() ) { jjtn000.value = "return"; }
     	
     )/*@bgen(jjtree)*/
     {
@@ -216,12 +216,12 @@ BetterNode Statement() : {/*@bgen(jjtree) Statement */
 /*@egen*/
 }
 
-void StatementExpression() : {/*@bgen(jjtree) StatementExpression */
-  BetterNode jjtn000 = new BetterNode(JJTSTATEMENTEXPRESSION);
+void Expression() : {/*@bgen(jjtree) Expression */
+  BetterNode jjtn000 = new BetterNode(JJTEXPRESSION);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}	
-{/*@bgen(jjtree) StatementExpression */
+{/*@bgen(jjtree) Expression */
         try {
 /*@egen*/
   	AssignmentExpression() ";"/*@bgen(jjtree)*/
@@ -317,11 +317,11 @@ void AssignmentExpression() : {/*@bgen(jjtree) AssignmentExpression */
 {/*@bgen(jjtree) AssignmentExpression */
         try {
 /*@egen*/
-  	ConditionalExpression()
-  	(
-  	  	t=< ASSIGNMENT_OPERATOR >{ jjtn000.value = t.image; }
-  	  	ConditionalExpression()
-  	)?/*@bgen(jjtree)*/
+  	VariableDeclaratorId() 
+
+  	t=< ASSIGNMENT_OPERATOR >{ jjtn000.value = t.image; }
+
+  	Primary()/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -342,6 +342,39 @@ void AssignmentExpression() : {/*@bgen(jjtree) AssignmentExpression */
           }
         }
 /*@egen*/
+}
+
+void VariableDeclaratorId() : {/*@bgen(jjtree) VariableDeclaratorId */
+  BetterNode jjtn000 = new BetterNode(JJTVARIABLEDECLARATORID);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/ }
+{/*@bgen(jjtree) VariableDeclaratorId */
+  try {
+/*@egen*/
+
+  Identifier()/*@bgen(jjtree)*/
+  } catch (Throwable jjte000) {
+    if (jjtc000) {
+      jjtree.clearNodeScope(jjtn000);
+      jjtc000 = false;
+    } else {
+      jjtree.popNode();
+    }
+    if (jjte000 instanceof RuntimeException) {
+      throw (RuntimeException)jjte000;
+    }
+    if (jjte000 instanceof ParseException) {
+      throw (ParseException)jjte000;
+    }
+    throw (Error)jjte000;
+  } finally {
+    if (jjtc000) {
+      jjtree.closeNodeScope(jjtn000, true);
+    }
+  }
+/*@egen*/
+
 }
 
 void ConditionalExpression() : {/*@bgen(jjtree) ConditionalExpression */

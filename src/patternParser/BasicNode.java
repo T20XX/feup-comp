@@ -7,13 +7,14 @@ public class BasicNode {
 	
 	public static enum Type{
 		Statement,
-		StatementExpression,
+		Expression,
 		AssignmentExpression,
 		ConditionalExpression,
 		AtomicExpression, 
 		Primary,
 		Identifier,
-		Literal;
+		Literal,
+		VariableDeclaratorId;
 	}
 	
 	protected Type type;
