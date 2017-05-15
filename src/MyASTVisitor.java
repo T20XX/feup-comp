@@ -1,5 +1,6 @@
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
@@ -12,13 +13,17 @@ import patternParser.VariableDeclaratorId;
 
 public class MyASTVisitor extends ASTVisitor {
 	
+	private CompilationUnit cu;
 	private BasicNode nodeToFind;
 	private ASTNode correspondingNode;
 
-	public MyASTVisitor(BasicNode nodeToFind) {
+	public MyASTVisitor(CompilationUnit cu, BasicNode nodeToFind) {
 		super();
 		
+		this.cu = cu;
 		this.nodeToFind = nodeToFind;
+		
+		cu.accept(this);
 	}
 
 	@Override
@@ -46,12 +51,9 @@ public class MyASTVisitor extends ASTVisitor {
 			{	
 				
 				System.out.println(declaratorId.getFirstChild().getValue());
-				System.out.println();
-				System.out.println();
-				System.out.println();
 				
 				this.correspondingNode = node;
-				System.out.println("Found match!!");
+				System.out.println("Found match at line: " + cu.getLineNumber(node.getStartPosition()));
 			}
 			
 			

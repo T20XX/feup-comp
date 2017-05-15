@@ -110,9 +110,7 @@ public class PAT {
 		
 		BasicNode.Type type = node.getType();
 		
-		MyASTVisitor visitor = new MyASTVisitor(node);
-		
-		cu.accept(visitor);
+		MyASTVisitor visitor = new MyASTVisitor(cu, node);
 		
 		for(int i = 0; i < node.getChildren().size(); i++)
 		{
