@@ -6,7 +6,7 @@ javacc -OUTPUT_DIRECTORY="src/patternsGrammar" ./src/patternsGrammar/Parser.jj
 
 #COMPILE JAVA
 mkdir -p ./bin
-javac -g -d "bin" -cp "lib/*" ./src/PAT.java ./src/jsonParser/adapters/*.java ./src/jsonParser/containers/*.java ./src/patternsGrammar/*.java
+javac -g -d "bin" -cp "lib/*" ./src/**/*.java
 
 #EXECUTE PAT
 echo "Running..."
