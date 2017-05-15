@@ -31,30 +31,6 @@ public class Parser
   }
 }
 
-/*int eval(SimpleNode node) {
-	if(node.jjtGetNumChildren() == 0) // leaf node with integer value
-		return node.val;
-	else if(node.jjtGetNumChildren() == 1) // only one child
-		return this.eval((SimpleNode) node.jjtGetChild(0));
-
-	SimpleNode lhs = (SimpleNode) node.jjtGetChild(0); //left child
-	SimpleNode rhs = (SimpleNode) node.jjtGetChild(1); // right child
-
-	switch(node.Op) {
- 		case MyConstants.ADD : return eval( lhs ) + eval( rhs );
-	 	case MyConstants.SUB : return eval( lhs ) - eval( rhs );
- 		case MyConstants.MUL : return eval( lhs ) * eval( rhs );
- 		case MyConstants.DIV : return eval( lhs ) / eval( rhs );
-
-		default : // abort
-
-
-	System.out.println("Operador ilegal!");
-	System.exit(1);
-	}
-	return 0;
-}*/
-
 PARSER_END(Parser)
 
 SKIP :
@@ -81,7 +57,7 @@ TOKEN : {
   < BOOLEAN: ("true" | "false")>  |
   < NULL: "null">  |
   
-  < BASIC_TYPE: ("byte" | "short" | "char" | "int" | "long" | "float" | "double" | "boolean") > |
+  < PRIMITIVE_TYPE: ("byte" | "short" | "char" | "int" | "long" | "float" | "double" | "boolean") > |
   < ASSIGNMENT_OPERATOR: ("+" | "-" | "*" | "/" | "&" | "|" | "^" | "%" | "<<" | ">>" | ">>>")? "=" > |
   < INFIX_OPERATOR: ("||" | "&&" | "|" | "^" | "&" | "==" | "!=" | "<" | ">" | "<=" | ">=" | "<<" | ">>" | ">>>" | "+" | "-" | "*" | "/" | "%") > |
   < PREFIX_OPERATOR: ("+" | "-" | "~" | "!" | "++" | "--") > |
@@ -91,6 +67,7 @@ TOKEN : {
   < STARTJAVA: "@@" (["a"-"z","_","A"-"Z","0"-"9"])+ >
   }
 
+/** BIG NODES **/
 
 BetterNode Start() : { }
 {
@@ -103,86 +80,76 @@ BetterNode Start() : { }
 void Rule(): { Token t;}
 {
 	(t=< STARTJAVA > { jjtThis.value = t.image; })
+	
 	(Statement())+
+
 	< ENDJAVA >
 }
 
-
-//INCOMPLETE
-BetterNode Statement() : {}
-{
-  	(
-  	  	( Block() ) { jjtThis.value = "block"; } |  	  	( Expression() ) { jjtThis.value = "statement"; }|
-    	( < IF > ParExpression() Statement()
-    		( < ELSE > Statement() )?
-    	) { jjtThis.value = "if"; }|
-    	( < WHILE > ParExpression() Statement() ) { jjtThis.value = "while"; }|
-    	( < RETURN > Expression() ) { jjtThis.value = "return"; }
-    	
-    )
-
-    {return jjtThis;}
-}
-
-void Expression() : {}	
-{
-  	AssignmentExpression() ";"
-}
+/** STATEMENTS **/
 
 void Block() : {}
 {
-  	"{" (Statement())* "}"
+  	"{" (BlockStatement())* "}"
 }
+
+void BlockStatement() : { }
+{
+  Statement()
+}
+
+void LocalVariableDeclarationStatement() : { }
+{
+  (TypeType())* VariableDeclarator() 
+}
+
+BetterNode Statement() : {}
+{
+  	LocalVariableDeclarationStatement() ";"
+
+  	{return jjtThis;} 
+}
+
+
+/** EXPRESSIONS **/
 
 void ParExpression() : {}
 {
-  	"(" AssignmentExpression() ")"
+  	"(" Expression() ")"
 }
 
-void AssignmentExpression() : {Token t;}
+void Expression() : { }
 {
-  	VariableDeclaratorId() 
+  	Primary()|
+  	";"
+}
 
-  	t=< ASSIGNMENT_OPERATOR >{ jjtThis.value = t.image; }
-
-  	Primary()
+void Primary() : {}
+{
+  ParExpression() |
+  Identifier() |
+  Literal() 
 }
 
 void VariableDeclaratorId() : { }
 {
+  (  	Pattern() |
+  	(Identifier() ("[" "]")*)
+  )
+}
 
-  Pattern() | Identifier()
+void VariableDeclarator() : {Token t;}
+{
+  VariableDeclaratorId()
+
+  (t=< ASSIGNMENT_OPERATOR >{ jjtThis.value = t.image; }
+    VariableInitializer())?
 
 }
 
-void ConditionalExpression() : {}
+void VariableInitializer() : { }
 {
-  	AtomicExpression() (ConditionalExpressionRest())?
-}
-
-//INCOMPLETE
-void ConditionalExpressionRest() : {Token t;}
-{
-  	t=< INFIX_OPERATOR > { jjtThis.value = t.image; }
-  	AtomicExpression()
-}
-
-//INCOMPLETE
-void AtomicExpression() : {Token t;}
-{
-  	(  	  Primary() |
-  	  (
-  	    	t=< PREFIX_OPERATOR > { jjtThis.value = t.image; }
-  	  		AtomicExpression()
-  	  )
-  	)
-}
-
-//INCOMPLETE
-void Primary() : {}
-{
-  	(
-  	  Literal() | ParExpression() | Identifier() | Pattern()  	)
+  Expression()
 }
 
 void Pattern() : {Token t;}
@@ -191,7 +158,17 @@ void Pattern() : {Token t;}
 	  
 }
 
-//INCOMPLETE
+void TypeType() : { Token t;}
+{
+  // Falta o tipo de uma classe
+  PrimitiveType()
+}
+
+void PrimitiveType() : { Token t; }
+{
+	t = < PRIMITIVE_TYPE > { jjtThis.value = t.image;}
+}
+
 void Literal() : {Token t;}
 {
   	(
@@ -204,11 +181,7 @@ void Literal() : {Token t;}
   	)
 }
 
-//INCOMPLETE
 void Identifier() : {Token t;}
 {
 	t=< IDENTIFIER >{ jjtThis.value = t.image;}
-	(	"."
-		t=< IDENTIFIER >{ jjtThis.value += "." + t.image;}
-	)*
 }

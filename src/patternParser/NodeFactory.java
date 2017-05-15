@@ -5,13 +5,7 @@ public class NodeFactory {
 	public BasicNode getNode(BasicNode.Type type, String value) throws Exception
 	{
 		switch(type)
-		{
-		case AssignmentExpression:
-			return new AssignmentExpression(type, value);
-			
-		case AtomicExpression:
-			return new AtomicExpression(type, value);
-			
+		{	
 		case Expression:
 			return new Expression(type, value);
 			
@@ -41,6 +35,21 @@ public class NodeFactory {
 			
 		case Pattern:
 			return new Pattern(type, value);
+				
+		case LocalVariableDeclarationStatement:
+			return new LocalVariableDeclarationStatement(type, value);
+			
+		case VariableDeclarator:
+			return new VariableDeclarator(type, value);
+			
+		case TypeType:
+			return new TypeType(type, value);
+			
+		case PrimitiveType:
+			return new PrimitiveType(type, value);
+			
+		case VariableInitializer:
+			return new VariableInitializer(type, value);
 			
 		}
 		

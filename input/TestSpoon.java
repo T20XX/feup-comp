@@ -11,18 +11,17 @@ public class TestSpoon {
 		int a = 1;
 		int b = 2;
 
+		int c = 0;
+		
 		if (a < b) {
-			int c = (a > b ? a : b);
+			c = b;
 
 		} else {
-			int c = b;
+			c = a;
 		}
 
-		if (a < b) {
-			int c = a;
-		} else {
-			int c = b;
-		}
+		if (a > b)
+			c = c;
 
 	}
 }

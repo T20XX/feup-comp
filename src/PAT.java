@@ -1,39 +1,22 @@
 
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
-import org.eclipse.jdt.core.dom.*;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IJavaElement;
+
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import patternParser.BasicNode;
-import patternParser.BasicNode.Type;
 import patternsGrammar.ParseException;
 import patternsGrammar.Parser;
 import patternsGrammar.SimpleNode;
-import utils.MyFileReader;
 
 public class PAT {
 
@@ -94,7 +77,7 @@ public class PAT {
 		parser.setResolveBindings(true); // we need bindings later on
 		parser.setBindingsRecovery(true);
 		
-		Map options = JavaCore.getOptions();
+		Map<String, String> options = JavaCore.getOptions();
 		parser.setCompilerOptions(options);
 		
 		CompilationUnit cu = (CompilationUnit) parser.createAST(null);
@@ -111,9 +94,7 @@ public class PAT {
 			return;
 		}
 		
-		BasicNode.Type type = node.getType();
-		
-		MyASTVisitor visitor = new MyASTVisitor(cu, node);
+		new MyASTVisitor(cu, node);
 		
 		for(int i = 0; i < node.getChildren().size(); i++)
 		{

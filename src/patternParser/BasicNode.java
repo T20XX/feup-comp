@@ -1,7 +1,6 @@
 package patternParser;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class BasicNode {
 	
@@ -9,15 +8,18 @@ public class BasicNode {
 		Start,
 		Rule,
 		Statement,
+		LocalVariableDeclarationStatement,
 		Expression,
-		AssignmentExpression,
-		AtomicExpression, 
 		Primary,
 		Identifier,
 		Literal,
 		ParExpression,
 		Pattern,
-		VariableDeclaratorId;
+		VariableDeclarator,
+		VariableDeclaratorId,
+		TypeType,
+		PrimitiveType,
+		VariableInitializer;
 	}
 	
 	protected Type type;

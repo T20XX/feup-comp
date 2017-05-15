@@ -6,10 +6,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 
-import patternParser.AssignmentExpression;
-import patternParser.BasicNode;
-import patternParser.Primary;
-import patternParser.VariableDeclaratorId;
+import patternParser.*;
 
 public class MyASTVisitor extends ASTVisitor {
 	
@@ -42,23 +39,7 @@ public class MyASTVisitor extends ASTVisitor {
 	@Override
 	public boolean visit(VariableDeclarationFragment node) {
 		
-		if(this.nodeToFind.getType() == BasicNode.Type.AssignmentExpression)
-		{
-			VariableDeclaratorId declaratorId = (VariableDeclaratorId) ((AssignmentExpression) nodeToFind).getVariableDeclaratorId();
-			Primary initializer = (Primary) ((AssignmentExpression) nodeToFind).getInitializer();
-			
-			if(declaratorId.getFirstChild().getValue().equals(node.getName().toString()) && initializer.getFirstChild().getValue().equals(node.getInitializer().toString()))
-			{	
-				
-				System.out.println(declaratorId.getFirstChild().getValue());
-				
-				this.correspondingNode = node;
-				System.out.println("Found match at line: " + cu.getLineNumber(node.getStartPosition()));
-			}
-			
-			
-			
-		}
+		
 		
 		return false; // do not visit children
 	}
