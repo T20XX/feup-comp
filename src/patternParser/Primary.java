@@ -6,5 +6,4 @@ public class Primary extends BasicNode {
 		super(type, value);
 		// TODO Auto-generated constructor stub
 	}
-
 }

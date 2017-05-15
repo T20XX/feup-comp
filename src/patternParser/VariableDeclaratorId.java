@@ -7,4 +7,12 @@ public class VariableDeclaratorId extends Identifier {
 		// TODO Auto-generated constructor stub
 	}
 
+	public BasicNode getIdentifier(){
+		for (BasicNode basicNode : children) {
+			if(basicNode.type == BasicNode.Type.Identifier)
+				return basicNode;
+		}
+		
+		return null;	
+	}
 }

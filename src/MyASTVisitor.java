@@ -5,7 +5,10 @@ import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 
+import patternParser.AssignmentExpression;
 import patternParser.BasicNode;
+import patternParser.Primary;
+import patternParser.VariableDeclaratorId;
 
 public class MyASTVisitor extends ASTVisitor {
 	
@@ -36,8 +39,23 @@ public class MyASTVisitor extends ASTVisitor {
 		
 		if(this.nodeToFind.getType() == BasicNode.Type.AssignmentExpression)
 		{
-			this.correspondingNode = node;
-			System.out.println("Found an assignment!: " + node.getName() +"="+ node.getInitializer());
+			VariableDeclaratorId declaratorId = (VariableDeclaratorId) ((AssignmentExpression) nodeToFind).getVariableDeclaratorId();
+			Primary initializer = (Primary) ((AssignmentExpression) nodeToFind).getInitializer();
+			
+			if(declaratorId.getFirstChild().getValue().equals(node.getName().toString()) && initializer.getFirstChild().getValue().equals(node.getInitializer().toString()))
+			{	
+				
+				System.out.println(declaratorId.getFirstChild().getValue());
+				System.out.println();
+				System.out.println();
+				System.out.println();
+				
+				this.correspondingNode = node;
+				System.out.println("Found match!!");
+			}
+			
+			
+			
 		}
 		
 		return false; // do not visit children

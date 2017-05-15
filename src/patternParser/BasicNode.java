@@ -74,6 +74,11 @@ public class BasicNode {
 		return children;
 	}
 
+	
+	public BasicNode getFirstChild(){
+		return children.get(0);
+	}
+	
 	@Override
 	public String toString() {
 		return "BasicNode [type=" + type + ", value=" + value + ", children=" + children + "]";
