@@ -7,6 +7,8 @@ public class AssignmentExpression extends Expression{
 		
 	}
 
-	
-
+	@Override
+	public String toString() {
+		return "AssignmentExpression [type=" + type + ", value=" + value + ", children=" + children + "]";
+	}
 }
