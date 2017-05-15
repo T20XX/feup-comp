@@ -6,6 +6,8 @@ import java.util.Map;
 public class BasicNode {
 	
 	public static enum Type{
+		Start,
+		Rule,
 		Statement,
 		Expression,
 		AssignmentExpression,
@@ -13,6 +15,8 @@ public class BasicNode {
 		Primary,
 		Identifier,
 		Literal,
+		ParExpression,
+		Pattern,
 		VariableDeclaratorId;
 	}
 	
@@ -33,7 +37,7 @@ public class BasicNode {
 	}
 
 	
-	public static BasicNode parseFromString(String s)
+	public static BasicNode parseFromString(String s) throws Exception
 	{
 		String stringType = null;
 		String value = null;
@@ -68,6 +72,15 @@ public class BasicNode {
 
 	public String getValue() {
 		return value;
+	}
+	
+
+	public void setType(Type type) {
+		this.type = type;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 	public ArrayList<BasicNode> getChildren() {

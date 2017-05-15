@@ -151,7 +151,7 @@ void AssignmentExpression() : {Token t;}
 void VariableDeclaratorId() : { }
 {
 
-  Identifier()
+  Pattern() | Identifier()
 
 }
 

@@ -56,7 +56,7 @@ public class PAT {
 				input = new FileInputStream("input" + FS + DSLFilePath);
 
 				Parser parser = new Parser(input);
-				root = parser.Statement();
+				root = parser.Start();
 				root.dump("");
 			} catch (FileNotFoundException | ParseException e1) {
 				// TODO Auto-generated catch block
@@ -65,15 +65,18 @@ public class PAT {
 			}
 		
 		CompilationUnit cu = null;
+		BasicNode rootNode = null;
 		
 		try {
 			cu = eclipseAST(new String(Files.readAllBytes(Paths.get("input" + FS + JavaFilePath))).toCharArray());
+			rootNode = getAST(root);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-		BasicNode rootNode = getAST(root);
 		
 		findPattern(cu, rootNode);
 	
@@ -122,7 +125,7 @@ public class PAT {
 	}
 	
 	
-	public static BasicNode getAST(SimpleNode node) {
+	public static BasicNode getAST(SimpleNode node) throws Exception {
 		
 		BasicNode ret = BasicNode.parseFromString(node.toString());
 		

@@ -2,7 +2,7 @@ package patternParser;
 
 public class NodeFactory {
 
-	public BasicNode getNode(BasicNode.Type type, String value)
+	public BasicNode getNode(BasicNode.Type type, String value) throws Exception
 	{
 		switch(type)
 		{
@@ -29,10 +29,23 @@ public class NodeFactory {
 			
 		case VariableDeclaratorId:
 			return new VariableDeclaratorId(type, value);
+			
+		case Start:
+			return new Start(type, value);
+			
+		case Rule:
+			return new Rule(type, value);
+			
+		case ParExpression:
+			return new ParExpression(type, value);
+			
+		case Pattern:
+			return new Pattern(type, value);
+			
 		}
 		
+		throw new Exception("Missing mathcing case in NodeFactory for type: " + type.toString());
 		
-		return null;
 	}
 
 }

@@ -353,7 +353,7 @@ void VariableDeclaratorId() : {/*@bgen(jjtree) VariableDeclaratorId */
   try {
 /*@egen*/
 
-  Identifier()/*@bgen(jjtree)*/
+  Pattern() | Identifier()/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
