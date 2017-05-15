@@ -9,7 +9,6 @@ public class BasicNode {
 		Statement,
 		Expression,
 		AssignmentExpression,
-		ConditionalExpression,
 		AtomicExpression, 
 		Primary,
 		Identifier,
@@ -59,7 +58,8 @@ public class BasicNode {
 		
 		Type type = BasicNode.Type.valueOf(stringType);
 		
-		return new BasicNode(type, value);
+		NodeFactory factory = new NodeFactory();
+		return factory.getNode(type, value);
 	}
 	
 	public Type getType() {
@@ -80,6 +80,6 @@ public class BasicNode {
 	}
 
 	public static void main(String[] args){
-		System.out.println(parseFromString("Statement"));
+		
 	}
 }
