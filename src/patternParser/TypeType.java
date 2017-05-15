@@ -7,4 +7,12 @@ public class TypeType extends BasicNode {
 		// TODO Auto-generated constructor stub
 	}
 
+	public BasicNode getTypeNode(){
+		for (BasicNode basicNode : children) {
+			if(basicNode.type == BasicNode.Type.PrimitiveType)
+				return basicNode;
+		}
+		
+		return null;
+	}
 }

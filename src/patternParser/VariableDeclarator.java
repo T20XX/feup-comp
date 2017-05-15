@@ -6,5 +6,15 @@ public class VariableDeclarator extends BasicNode {
 		super(type, value);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public BasicNode getVariableDeclaratorId(){
+		for (BasicNode basicNode : children) {
+			if(basicNode.type == BasicNode.Type.VariableDeclaratorId)
+				return basicNode;
+		}
+		
+		return null;
+	}
+
 
 }

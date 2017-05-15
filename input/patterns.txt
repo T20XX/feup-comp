@@ -1,5 +1,5 @@
 @@r1
 
-int variavel = 3;
+int variavel;
 
 @@
