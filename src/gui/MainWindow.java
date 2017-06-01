@@ -9,12 +9,21 @@ public class MainWindow extends JFrame implements ActionListener
 private JTextArea ta;
 private int count;
 private JMenuBar menuBar;
-private JMenu fileM,editM,viewM;
+private JMenu fileM,editM;
 private JScrollPane scpane;
-private JMenuItem exitI,cutI,copyI,pasteI,selectI,saveI,loadI,statusI;
+private JMenuItem exitI,cutI,copyI,pasteI,selectI,saveI,loadI;
 private String pad;
 private JToolBar toolBar;
 private TextLineNumber textLineNumber;
+private Panel southPanel;
+private JButton selectFile;
+private JLabel fileName;
+private JPanel outputPanel;
+private JMenu helpM;
+private JMenuItem syntaxM;
+private JLabel textPane;
+private JPanel fileSelection;
+private JButton runButton;
 
 public MainWindow()
 {
@@ -30,8 +39,7 @@ public MainWindow()
     ta = new JTextArea(); //textarea
     menuBar = new JMenuBar(); //menubar
     fileM = new JMenu("File"); //file menu
-    editM = new JMenu("Edit"); //edit menu
-    viewM = new JMenu("View"); //edit menu
+    editM = new JMenu("Edit");
     scpane = new JScrollPane(ta); //scrollpane  and add textarea to scrollpane
     exitI = new JMenuItem("Exit");
     cutI = new JMenuItem("Cut");
@@ -39,12 +47,11 @@ public MainWindow()
     pasteI = new JMenuItem("Paste");
     selectI = new JMenuItem("Select All"); //menuitems
     saveI = new JMenuItem("Save"); //menuitems
-    loadI = new JMenuItem("Load"); //menuitems
-    statusI = new JMenuItem("Status"); //menuitems
+    loadI = new JMenuItem("Load");
     toolBar = new JToolBar();
     
-    textLineNumber = new TextLineNumber(ta);
-    scpane.setRowHeaderView(textLineNumber);
+    //textLineNumber = new TextLineNumber(ta);
+    //scpane.setRowHeaderView(textLineNumber);
 
     ta.setLineWrap(true);
     ta.setWrapStyleWord(true);
@@ -52,7 +59,6 @@ public MainWindow()
     setJMenuBar(menuBar);
     menuBar.add(fileM);
     menuBar.add(editM);
-    menuBar.add(viewM);
 
     fileM.add(saveI);
     fileM.add(loadI);
@@ -63,17 +69,46 @@ public MainWindow()
     editM.add(pasteI);        
     editM.add(selectI);
 
-    viewM.add(statusI);
-
     saveI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
     loadI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
     cutI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
     copyI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
     pasteI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
     selectI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+    
+    helpM = new JMenu("Help");
+    menuBar.add(helpM);
+    
+    syntaxM = new JMenuItem("Syntax");
+    helpM.add(syntaxM);
 
     pane.add(scpane,BorderLayout.CENTER);
     pane.add(toolBar,BorderLayout.SOUTH);
+    
+    southPanel = new Panel();
+    getContentPane().add(southPanel, BorderLayout.SOUTH);
+    southPanel.setLayout(new GridLayout(2, 0, 0, 0));
+    
+    fileSelection = new JPanel();
+    southPanel.add(fileSelection);
+    
+    selectFile = new JButton("Select file");
+    fileSelection.add(selectFile);
+    
+    fileName = new JLabel("No file selected");
+    fileSelection.add(fileName);
+    
+    runButton = new JButton("Run");
+    fileSelection.add(runButton);
+    
+    outputPanel = new JPanel();
+    southPanel.add(outputPanel);
+    outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.X_AXIS));
+    
+    textPane = new JLabel();
+    textPane.setText("Waiting for input.");
+    textPane.setToolTipText("PAT's output");
+    outputPanel.add(textPane);
 
     saveI.addActionListener(this);
     loadI.addActionListener(this);
@@ -82,18 +117,13 @@ public MainWindow()
     copyI.addActionListener(this);
     pasteI.addActionListener(this);
     selectI.addActionListener(this);
-    statusI.addActionListener(this);
 
     setVisible(true);
 }
 public void actionPerformed(ActionEvent e) 
 {
     JMenuItem choice = (JMenuItem) e.getSource();
-    if (choice == saveI)
-    {
-        //not yet implmented
-    }
-    else if (choice == exitI)
+    if (choice == exitI)
         System.exit(0);
     else if (choice == cutI)
     {
@@ -106,10 +136,7 @@ public void actionPerformed(ActionEvent e)
         ta.insert(pad, ta.getCaretPosition());
     else if (choice == selectI)
         ta.selectAll();
-    else if (e.getSource() == statusI)
-    {
-        //not yet implmented
-    }
+
 }
 public static void main(String[] args) 
 {
