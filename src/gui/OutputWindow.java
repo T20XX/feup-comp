@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -43,6 +44,7 @@ public class OutputWindow
     {
         final JFrame frame = new JFrame("Pattern matches");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setPreferredSize(new Dimension(700, 1000));
 
         JPanel contentPane = new JPanel();
         contentPane.setBorder(BorderFactory.createTitledBorder(
@@ -68,7 +70,14 @@ public class OutputWindow
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         tarea.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(10, 20, 10, 20)));
         tarea.setTabSize(2);
+        tarea.setPreferredSize(new Dimension(600, 900));
+      
+        // TODO: replace by output from PAT
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        arrayList.add(0);
+        arrayList.add(20);
         
+        this.highlightPatterns(arrayList);
        
         JScrollPane scrollPane = new JScrollPane(tarea);
         contentPane.add(scrollPane);
@@ -157,7 +166,7 @@ public class OutputWindow
             }
         });
 
-        frame.add(remHighButton, BorderLayout.PAGE_START);
+        //frame.add(remHighButton, BorderLayout.PAGE_START);
         frame.add(contentPane, BorderLayout.CENTER);
         frame.add(button, BorderLayout.PAGE_END);
 
@@ -180,6 +189,22 @@ public class OutputWindow
         panel.add(cbox);
 
         return panel;
+    }
+    
+    private void highlightPatterns(ArrayList<Integer> beginAndEndPoints){
+    	
+    	for(int i = 0; i < beginAndEndPoints.size(); i += 2){
+    		
+    		Highlighter highlighter = this.tarea.getHighlighter();
+    		
+    		try {
+				highlighter.addHighlight(beginAndEndPoints.get(i), beginAndEndPoints.get(i+1), this.cyanPainter);
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+			}
+    	}
+    	
+    	
     }
 
     public static void main(String... args)
