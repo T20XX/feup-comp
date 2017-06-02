@@ -42,32 +42,32 @@ SKIP :
 }
 TOKEN : {
 
-  < IF: "if" > |
-  < ELSE: "else" > |
-  < WHILE: "while" > |
-  < RETURN: "return" > |
-  
-  < PATTERN: "@" (["a"-"z","_","A"-"Z","0"-"9"])+ > |
-  
-  
-  < INTEGER: ("-")? (["0"-"9"])+ > |
-  < STRING: "\"" (~["\""])+ "\"" > | //INCOMPLETE
-  < FLOAT: ("-")? (["0"-"9"])+ "." (["0"-"9"])+> |
-  < CHAR: "'" (~["\""]) "'" >  |	
-  < BOOLEAN: ("true" | "false")>  |
-  < NULL: "null">  |
-  
-  < PRIMITIVE_TYPE: ("byte" | "short" | "char" | "int" | "long" | "float" | "double" | "boolean") > |
-  < ASSIGNMENT_OPERATOR: ("+" | "-" | "*" | "/" | "&" | "|" | "^" | "%" | "<<" | ">>" | ">>>")? "=" > |
-  < INFIX_OPERATOR: ("||" | "&&" | "|" | "^" | "&" | "==" | "!=" | "<" | ">" | "<=" | ">=" | "<<" | ">>" | ">>>" | "+" | "-" | "*" | "/" | "%") > |
-  < PREFIX_OPERATOR: ("+" | "-" | "~" | "!" | "++" | "--") > |
+  	< FOR: "for" > |
+  	< IF: "if" > |
+  	< ELSE: "else" > |
+  	< WHILE: "while" > |
+  	< RETURN: "return" > |
 
-  < IDENTIFIER: ["a"-"z","_","A"-"Z"] (["a"-"z","_","A"-"Z","0"-"9"])* > |
-  < ENDJAVA : "@@">|
-  < STARTJAVA: "@@" (["a"-"z","_","A"-"Z","0"-"9"])+ >
+  	< PATTERN: "@" (["a"-"z","_","A"-"Z","0"-"9"])+ > |
+
+  	< INTEGER: ("-")? (["0"-"9"])+ > |
+  	< STRING: "\"" (~["\""])+ "\"" > | //INCOMPLETE
+  	< FLOAT: ("-")? (["0"-"9"])+ "." (["0"-"9"])+> |
+  	< CHAR: "'" (~["\""]) "'" >  |	
+  	< BOOLEAN: ("true" | "false")>  |
+  	< NULL: "null">  |
+
+  	< PRIMITIVE_TYPE: ("byte" | "short" | "char" | "int" | "long" | "float" | "double" | "boolean") > |
+  	< ASSIGNMENT_OPERATOR: ("+" | "-" | "*" | "/" | "&" | "|" | "^" | "%" | "<<" | ">>" | ">>>")? "=" > |
+  	< INFIX_OPERATOR: ("||" | "&&" | "|" | "^" | "&" | "==" | "!=" | "<" | ">" | "<=" | ">=" | "<<" | ">>" | ">>>" | "+" | "-" | "*" | "/" | "%") > |
+  	
+  	< POSTFIX_OPERATOR: ("++" | "--") > |
+
+  	< IDENTIFIER: ["a"-"z","_","A"-"Z"] (["a"-"z","_","A"-"Z","0"-"9"])* > |
+  	< ENDJAVA : "@@">|
+  	< STARTJAVA: "@@" (["a"-"z","_","A"-"Z","0"-"9"])+ >
   }
 
-/** BIG NODES **/
 
 BetterNode Start() : { }
 {
@@ -90,45 +90,56 @@ void Rule(): { Token t;}
 
 void Block() : {}
 {
-  	"{" (BlockStatement())* "}"
+  	"{" (Statement())* "}"
 }
 
-void BlockStatement() : { }
+
+BetterNode Statement() : {}
 {
-  Statement()
+  	(
+  	  	( LocalVariableDeclarationStatement() ";" ) |
+  		IfStatement() |
+  		WhileStatement() |
+  		ForStatement() |
+  		( ReturnStatement() ";" ) |
+  		Block()
+	)
+  	{return jjtThis;} 
+}
+
+void ReturnStatement() : { }
+{
+  	< RETURN > [Primary()]
 }
 
 void LocalVariableDeclarationStatement() : { }
 {
-  (TypeType())* VariableDeclarator() 
+  [TypeType()] VariableDeclarator()
 }
-
-BetterNode Statement() : {}
-{
-  	LocalVariableDeclarationStatement() ";"
-
-  	{return jjtThis;} 
-}
-
 
 /** EXPRESSIONS **/
 
 void ParExpression() : {}
 {
-  	"(" Expression() ")"
+  	"(" ConditionalExpression() ")"
+}
+
+void ConditionalExpression() : { }
+{
+	Primary() [< INFIX_OPERATOR > Expression()]
 }
 
 void Expression() : { }
 {
-  	Primary()|
-  	";"
+  	Primary()
 }
 
 void Primary() : {}
 {
   ParExpression() |
   Identifier() |
-  Literal() 
+  Literal() |
+  Pattern()
 }
 
 void VariableDeclaratorId() : { }
@@ -142,8 +153,10 @@ void VariableDeclarator() : {Token t;}
 {
   VariableDeclaratorId()
 
-  (t=< ASSIGNMENT_OPERATOR >{ jjtThis.value = t.image; }
-    VariableInitializer())?
+  [
+  	(t=< ASSIGNMENT_OPERATOR >{ jjtThis.value = t.image; } VariableInitializer()) |
+  	t=< POSTFIX_OPERATOR >{ jjtThis.value = t.image; }
+  ]
 
 }
 
@@ -184,4 +197,35 @@ void Literal() : {Token t;}
 void Identifier() : {Token t;}
 {
 	t=< IDENTIFIER >{ jjtThis.value = t.image;}
+}
+
+/** CONTROL **/
+
+void IfStatement() : {}
+{
+  	< IF > ParExpression() Statement()
+  	[ LOOKAHEAD(1) < ELSE > Statement() ]
+  	
+}
+
+void WhileStatement() : {}
+{
+  	< WHILE > ParExpression() Statement()
+  	
+}
+
+void ForInit() : {}
+{
+  	[TypeType()] VariableDeclarator()
+  	
+}
+
+void ForUpdate() : {}
+{
+  	VariableDeclarator()
+}
+
+void ForStatement() : {}
+{
+  	< FOR > "(" [ForInit()] ";" [ConditionalExpression()] ";" [ForUpdate()] ")" Statement()
 }
