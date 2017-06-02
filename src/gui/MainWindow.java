@@ -27,7 +27,7 @@ private JButton runButton;
 
 public MainWindow()
 {
-    super("MainWindow");
+    super("PAT");
     setSize(600, 600);
     setLocationRelativeTo(null);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,6 +50,7 @@ public MainWindow()
     loadI = new JMenuItem("Load");
     toolBar = new JToolBar();
     
+    // TODO: uncomment
     //textLineNumber = new TextLineNumber(ta);
     //scpane.setRowHeaderView(textLineNumber);
 
