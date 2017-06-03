@@ -1,5 +1,7 @@
 @@r1
 
 int variavel;
+int edf;
+
 
 @@

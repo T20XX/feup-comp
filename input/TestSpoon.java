@@ -7,13 +7,16 @@ public class TestSpoon {
 
 	public static void main(String[] args) {
 
+		int edf = 2;
 		int variavel = 3;
+		
 		int a = 1;
 		int b = 2;
 
 		int c = 0;
 		
 		if (a < b) {
+			
 			c = b;
 
 		} else {
