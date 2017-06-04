@@ -124,9 +124,9 @@ void ParExpression() : {}
   	"(" ConditionalExpression() ")"
 }
 
-void ConditionalExpression() : { }
+void ConditionalExpression() : { Token t; }
 {
-	Primary() [< INFIX_OPERATOR > Expression()]
+	Primary() [t = < INFIX_OPERATOR > { jjtThis.value = t.image; } Expression()]
 }
 
 void Expression() : { }
@@ -203,7 +203,7 @@ void Identifier() : {Token t;}
 
 void IfStatement() : {}
 {
-  	< IF > ParExpression() Statement()
+  	< IF > "(" ConditionalExpression() ")" Statement()
   	[ LOOKAHEAD(1) < ELSE > Statement() ]
   	
 }

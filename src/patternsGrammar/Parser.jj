@@ -321,14 +321,14 @@ void ParExpression() : {/*@bgen(jjtree) ParExpression */
 }
 
 void ConditionalExpression() : {/*@bgen(jjtree) ConditionalExpression */
-  BetterNode jjtn000 = new BetterNode(JJTCONDITIONALEXPRESSION);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/ }
+                                 BetterNode jjtn000 = new BetterNode(JJTCONDITIONALEXPRESSION);
+                                 boolean jjtc000 = true;
+                                 jjtree.openNodeScope(jjtn000);
+/*@egen*/ Token t; }
 {/*@bgen(jjtree) ConditionalExpression */
         try {
 /*@egen*/
-	Primary() [< INFIX_OPERATOR > Expression()]/*@bgen(jjtree)*/
+	Primary() [t = < INFIX_OPERATOR > { jjtn000.value = t.image; } Expression()]/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -680,7 +680,7 @@ void IfStatement() : {/*@bgen(jjtree) IfStatement */
 {/*@bgen(jjtree) IfStatement */
         try {
 /*@egen*/
-  	< IF > ParExpression() Statement()
+  	< IF > "(" ConditionalExpression() ")" Statement()
   	[ LOOKAHEAD(1) < ELSE > Statement() ]/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {

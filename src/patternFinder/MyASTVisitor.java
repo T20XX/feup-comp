@@ -93,7 +93,7 @@ import patternParser.VariableDeclarator;
 import patternParser.VariableDeclaratorId;
 
 public class MyASTVisitor extends ASTVisitor {
-	
+
 	private BasicNode nodeToFind;
 	private ASTNode correspondingNode;
 	private boolean found;
@@ -101,7 +101,7 @@ public class MyASTVisitor extends ASTVisitor {
 
 	public MyASTVisitor(ASTNode nodeToSearch, BasicNode nodeToFind) {
 		super();
-		
+
 		if(nodeToFind.getType() == BasicNode.Type.Statement)
 		{
 			this.nodeToFind = nodeToFind.getFirstChild();
@@ -109,61 +109,61 @@ public class MyASTVisitor extends ASTVisitor {
 		else{
 			this.nodeToFind = nodeToFind;
 		}
-		
-		
+
+
 		nodeToSearch.accept(this);
 	}
-	
+
 	@Override
 	public boolean visit(VariableDeclarationStatement node) {
-		
+
 		//System.out.println("Visited VariableDeclarationStatement");
-		
+
 		this.found = false;
-		
+
 		if(this.nodeToFind.getType() == BasicNode.Type.LocalVariableDeclarationStatement){
-			
+
 			TypeType typeType = (TypeType)((LocalVariableDeclarationStatement) nodeToFind).getTypeType();
 			VariableDeclarator variableDeclarator = (VariableDeclarator)((LocalVariableDeclarationStatement) nodeToFind).getVariableDeclarator();
-		
+
 			MyASTVisitor typeTypeVisitor = new MyASTVisitor(node.getType(), typeType.getFirstChild());
 			MyASTVisitor variableDeclaratorVisitor = new MyASTVisitor((VariableDeclarationFragment) node.fragments().get(0), variableDeclarator);
-			
+
 			this.found = typeTypeVisitor.isFound() && variableDeclaratorVisitor.isFound();
-			
+
 			this.correspondingNode = node;
-			
+
 			if(found)
 			{
 				System.out.println("Found match on position: " + node.getStartPosition());
 				System.out.println("Node: " + node);
 			}
 		}	
-		
+
 		return false;
 	}
-	
-	
+
+
 	public boolean visit(PrimitiveType node)
 	{
 		//System.out.println("Visited PrimitiveType");
-		
+
 		this.found = false;
-		
+
 		if(this.nodeToFind.getType() == BasicNode.Type.PrimitiveType){
-			
+
 			if (node.getPrimitiveTypeCode().toString().equalsIgnoreCase(nodeToFind.getValue())){
 				this.found = true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	public boolean visit(VariableDeclarationFragment node)
 	{
 		//System.out.println("Visited VariableDeclarationF");
-		
+
 		if(this.nodeToFind.getType() == BasicNode.Type.VariableDeclarator)
 		{
 			VariableDeclaratorId variableDeclaratorId = (VariableDeclaratorId) ((VariableDeclarator) nodeToFind).getVariableDeclaratorId();
@@ -172,16 +172,16 @@ public class MyASTVisitor extends ASTVisitor {
 				this.found = true;
 			}
 		}
-		
+
 		return false;
 	}
 
-	
-	
+
+
 
 	@Override
 	public boolean visit(AnnotationTypeDeclaration node) {
-		
+
 		return false;
 	}
 
@@ -273,15 +273,9 @@ public class MyASTVisitor extends ASTVisitor {
 
 	@Override
 	public boolean visit(ConditionalExpression node) {
-		
-		this.found = false;
-		
-		if(this.nodeToFind.getType() == BasicNode.Type.ConditionalExpression){
-			
-		}	
-		
+
 		return false;
-		}
+	}
 
 	@Override
 	public boolean visit(ConstructorInvocation node) {
@@ -330,30 +324,30 @@ public class MyASTVisitor extends ASTVisitor {
 
 	@Override
 	public boolean visit(FieldDeclaration node) {
-		
+
 		this.found = false;
-		
+
 		if(this.nodeToFind.getType() == BasicNode.Type.LocalVariableDeclarationStatement){
-			
+
 			TypeType typeType = (TypeType)((LocalVariableDeclarationStatement) nodeToFind).getTypeType();
 			VariableDeclarator variableDeclarator = (VariableDeclarator)((LocalVariableDeclarationStatement) nodeToFind).getVariableDeclarator();
-		
+
 			MyASTVisitor typeTypeVisitor = new MyASTVisitor(node.getType(), typeType.getFirstChild());
 			MyASTVisitor variableDeclaratorVisitor = new MyASTVisitor((VariableDeclarationFragment) node.fragments().get(0), variableDeclarator);
-			
+
 			this.found = typeTypeVisitor.isFound() && variableDeclaratorVisitor.isFound();
-			
+
 			this.correspondingNode = node;
-			
+
 			if(found)
 			{
 				System.out.println("Found match on position: " + node.getStartPosition());
 				System.out.println("Node: " + node);
 			}
 		}	
-		
+
 		return false;	
-		
+
 	}
 
 	@Override
@@ -363,7 +357,23 @@ public class MyASTVisitor extends ASTVisitor {
 
 	@Override
 	public boolean visit(IfStatement node) {
-		// TODO Auto-generated method stub
+		this.found = false;
+
+		if(this.nodeToFind.getType() == BasicNode.Type.IfStatement){
+
+			MyASTVisitor expressionVisitor = new MyASTVisitor(node.getExpression(), nodeToFind.getFirstChild());
+
+			this.found = expressionVisitor.isFound();
+
+			this.correspondingNode = node;
+
+			if(found)
+			{
+				System.out.println("Found ifstatement match on position: " + node.getStartPosition());
+				System.out.println("Node: " + node);
+			}
+		}	
+
 		return false;	}
 
 	@Override
@@ -373,7 +383,26 @@ public class MyASTVisitor extends ASTVisitor {
 
 	@Override
 	public boolean visit(InfixExpression node) {
-		// TODO Auto-generated method stub
+		this.found = false;
+
+		if(this.nodeToFind.getType() == BasicNode.Type.ConditionalExpression){
+			InfixExpression.Operator operator = InfixExpression.Operator.toOperator(((patternParser.ConditionalExpression) nodeToFind).getOperator());
+			String leftOperand = ((patternParser.ConditionalExpression) nodeToFind).getLeftOperand();
+			String rightOperand = ((patternParser.ConditionalExpression) nodeToFind).getRightOperand();
+
+			if(node.getLeftOperand().toString().equals(leftOperand) &&
+					node.getOperator()== operator &&
+					node.getRightOperand().toString().equals(rightOperand)){
+				this.found = true;
+				this.correspondingNode = node;
+			}
+
+			if(found)
+			{
+				System.out.println("Found conditionalExpression match on position: " + node.getStartPosition());
+				System.out.println("Node: " + node);
+			}
+		}	
 		return false;	}
 
 	@Override
@@ -468,7 +497,6 @@ public class MyASTVisitor extends ASTVisitor {
 
 	@Override
 	public boolean visit(ParenthesizedExpression node) {
-		// TODO Auto-generated method stub
 		return false;	}
 
 	@Override

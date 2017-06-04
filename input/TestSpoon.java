@@ -15,7 +15,7 @@ public class TestSpoon {
 
 		int c = 0;
 		
-		if (a < b) {
+		if (a < 1) {
 			
 			c = b;
 
