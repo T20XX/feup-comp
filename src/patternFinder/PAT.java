@@ -121,7 +121,8 @@ public class PAT {
 			System.out.println("Searching in rule: " + rule.toString());
 			
 			MyRuleFinder myRuleFinder = findRule(cu, (Rule) rule);
-			outputWindow.highlightPatterns(myRuleFinder.correspondenciesPositions);
+			String ruleName = rule.getValue().substring(2);
+			outputWindow.highlightPatterns(ruleName, myRuleFinder.correspondenciesPositions);
 		}
 	
 		System.out.println(startNode);

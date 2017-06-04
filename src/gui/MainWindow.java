@@ -16,6 +16,7 @@ import javax.swing.*;
 import org.apache.commons.io.FilenameUtils;
 
 import patternFinder.PAT;
+import utils.MyFileReader;
 
 public class MainWindow extends JFrame implements ActionListener
 {
@@ -221,14 +222,7 @@ public class MainWindow extends JFrame implements ActionListener
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 
 					File selectedFile = fc.getSelectedFile();
-
-					try {
-						byte[] encoded = Files.readAllBytes(Paths.get(selectedFile.getPath()));
-						ta.setText(new String(encoded, StandardCharsets.UTF_8));
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} 
+						ta.setText(MyFileReader.read(selectedFile));
 
 				} 
 
