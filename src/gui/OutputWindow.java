@@ -3,6 +3,7 @@ package gui;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class OutputWindow
         counter = 0;
     }
 
-    private void createAndDisplayGUI()
+    public void createAndDisplayGUI(File file, ArrayList<utils.Position> positions)
     {
         final JFrame frame = new JFrame("Pattern matches");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -53,7 +54,7 @@ public class OutputWindow
         tarea = new JTextArea();
         
         try {
-        	FileReader reader = new FileReader("./input/TestSpoon.java");
+        	FileReader reader = new FileReader(file.getAbsoluteFile());
             BufferedReader bufferedReader = new BufferedReader(reader);
             tarea.read(bufferedReader, null);
 			bufferedReader.close();
@@ -72,16 +73,11 @@ public class OutputWindow
         tarea.setTabSize(2);
         tarea.setPreferredSize(new Dimension(600, 900));
       
-        // TODO: replace by output from PAT
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        arrayList.add(0);
-        arrayList.add(20);
-        
-        this.highlightPatterns(arrayList);
+        this.highlightPatterns(positions);
        
         JScrollPane scrollPane = new JScrollPane(tarea);
         contentPane.add(scrollPane);
-
+        
         JButton remHighButton = new JButton("REMOVE HIGHLIGHT");
         remHighButton.addActionListener(new ActionListener()
         {
@@ -170,6 +166,7 @@ public class OutputWindow
         frame.add(contentPane, BorderLayout.CENTER);
         frame.add(button, BorderLayout.PAGE_END);
 
+
         frame.pack();
         frame.setLocationByPlatform(true);
         frame.setVisible(true);
@@ -191,30 +188,19 @@ public class OutputWindow
         return panel;
     }
     
-    private void highlightPatterns(ArrayList<Integer> beginAndEndPoints){
+    public void highlightPatterns(ArrayList<utils.Position> positions){
     	
-    	for(int i = 0; i < beginAndEndPoints.size(); i += 2){
+    	for(int i = 0; i < positions.size(); i++){
     		
     		Highlighter highlighter = this.tarea.getHighlighter();
     		
     		try {
-				highlighter.addHighlight(beginAndEndPoints.get(i), beginAndEndPoints.get(i+1), this.cyanPainter);
+				highlighter.addHighlight(positions.get(i).getBegin(), positions.get(i).getEnd(), this.cyanPainter);
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}
     	}
     	
     	
-    }
-
-    public static void main(String... args)
-    {
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            public void run()
-            {
-                new OutputWindow().createAndDisplayGUI();
-            }
-        });
     }
 }

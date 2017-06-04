@@ -1,5 +1,6 @@
 package patternFinder;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +11,9 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.StructuralPropertyDescriptor;
 
+import gui.OutputWindow;
 import patternParser.*;
+import utils.Position;
 
 public class MyRuleFinder {
 	
@@ -18,7 +21,7 @@ public class MyRuleFinder {
 	Rule rule;
 	ArrayList<BasicNode> rulePatterns;
 	Map<BasicNode, MyASTVisitor> correspondencies;
-	
+	ArrayList<Position> correspondenciesPositions;
 	
 	public MyRuleFinder(CompilationUnit rootCu, Rule rule) {
 		
@@ -28,6 +31,7 @@ public class MyRuleFinder {
 		this.rulePatterns = rule.getChildren();
 		
 		this.correspondencies = new HashMap<>();
+		this.correspondenciesPositions = new ArrayList<>();
 	}
 	
 	public void search(ASTNode parentNode){
@@ -45,6 +49,13 @@ public class MyRuleFinder {
 				
 				if(myASTVisitor.isFound()){
 					this.correspondencies.put(pattern, myASTVisitor);
+					
+					int beginPos = myASTVisitor.getCorrespondingNode().getStartPosition();
+					int endPos = beginPos + myASTVisitor.getCorrespondingNode().getLength();
+					
+					Position pos = new Position(beginPos, endPos);
+					
+					this.correspondenciesPositions.add(pos);
 				}
 				
 			}
@@ -121,4 +132,9 @@ public class MyRuleFinder {
 	    return children;
 	}
 
+	public ArrayList<Position> getCorrespondenciesPositions() {
+		return correspondenciesPositions;
+	}
+	
+	
 }

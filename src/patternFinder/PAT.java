@@ -19,15 +19,18 @@ import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.StructuralPropertyDescriptor;
 
+import gui.OutputWindow;
 import patternParser.BasicNode;
 import patternParser.Rule;
 import patternsGrammar.ParseException;
 import patternsGrammar.Parser;
 import patternsGrammar.SimpleNode;
+import utils.Position;
 
 public class PAT {
 
 	public static final String FS = System.getProperty("file.separator");
+	public static File javaFile = null;
 
 	public static void main(String[] args) {
 
@@ -83,6 +86,7 @@ public class PAT {
 	public static void run(InputStream patterns, File javaFile){
 	
 		SimpleNode root = null;
+		PAT.javaFile = javaFile;
 
 		Parser parser = new Parser(patterns);
 		try {
@@ -151,6 +155,8 @@ public class PAT {
 		myRuleFinder.search(cu);
 		System.out.println("Same order:" + myRuleFinder.verifySameOrder());
 		System.out.println("Same parent:" + myRuleFinder.verifySameParent());
+		
+		createOutputWindow(myRuleFinder.getCorrespondenciesPositions());
 	}
 	
 	
@@ -172,6 +178,11 @@ public class PAT {
 		
 	  }
 	
+	private static void createOutputWindow(ArrayList<Position> positions){
+		
+		OutputWindow outputWindow = new OutputWindow();
+		outputWindow.createAndDisplayGUI(PAT.javaFile, positions);
+		
 	
-
+	}
 }

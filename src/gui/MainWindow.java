@@ -206,6 +206,7 @@ public void actionPerformed(ActionEvent e)
         ta.selectAll();
 
 }
+
 public static void main(String[] args) 
 {
     new MainWindow();
