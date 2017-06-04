@@ -2,7 +2,17 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
 import javax.swing.*;
+
+import org.apache.commons.io.FilenameUtils;
+
+import patternFinder.PAT;
 
 public class MainWindow extends JFrame implements ActionListener
 {
@@ -24,6 +34,8 @@ private JMenuItem syntaxM;
 private JLabel textPane;
 private JPanel fileSelection;
 private JButton runButton;
+
+private File javaFile = null;
 
 public MainWindow()
 {
@@ -96,11 +108,66 @@ public MainWindow()
     selectFile = new JButton("Select file");
     fileSelection.add(selectFile);
     
+    selectFile.addActionListener(new ActionListener(){
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			final JFileChooser fc = new JFileChooser();
+			int returnVal = fc.showOpenDialog(MainWindow.this);
+			
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				
+				File selectedFile = fc.getSelectedFile();
+				
+				// if file is not a java file
+                if(!FilenameUtils.getExtension(selectedFile.getName()).equalsIgnoreCase("java"))
+                {
+                	final JFrame parent = new JFrame();
+                	JOptionPane.showMessageDialog(parent, "Please select a .java file to examine.");
+                    
+                	System.out.println("Bad extension for file.");
+                }
+                else
+                {
+                	MainWindow.this.fileName.setText(selectedFile.getName());
+                	MainWindow.this.javaFile = selectedFile;
+                	
+                	System.out.println("User decided to test file '" + MainWindow.this.javaFile.getName() + "'.");
+                }
+                
+                
+            } 
+			
+		}
+    	
+    });
+    
     fileName = new JLabel("No file selected");
     fileSelection.add(fileName);
     
     runButton = new JButton("Run");
     fileSelection.add(runButton);
+    runButton.addActionListener(new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			if(MainWindow.this.javaFile == null)
+			{
+				final JFrame parent = new JFrame();
+				JOptionPane.showMessageDialog(parent, "No file has been selected.");
+				return;
+			}
+			
+			String patterns = MainWindow.this.ta.getText();
+			InputStream stream = new ByteArrayInputStream(patterns.getBytes(StandardCharsets.UTF_8));
+
+			
+			PAT.run(stream, MainWindow.this.javaFile);
+			
+		}
+	});
     
     outputPanel = new JPanel();
     southPanel.add(outputPanel);

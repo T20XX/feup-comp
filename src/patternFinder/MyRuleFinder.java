@@ -35,6 +35,9 @@ public class MyRuleFinder {
 		// Search on every node of the java code
 		for(ASTNode node : getASTNodeChildren(parentNode)){
 			
+			System.out.println("Node: " + node);
+			System.out.println("Node type: " + node.getNodeType());
+			
 			// Search for all the pattern nodes
 			for(BasicNode pattern : this.rulePatterns){
 				

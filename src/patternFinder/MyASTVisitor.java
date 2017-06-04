@@ -323,8 +323,31 @@ public class MyASTVisitor extends ASTVisitor {
 
 	@Override
 	public boolean visit(FieldDeclaration node) {
-		// TODO Auto-generated method stub
-		return false;	}
+		
+		this.found = false;
+		
+		if(this.nodeToFind.getType() == BasicNode.Type.LocalVariableDeclarationStatement){
+			
+			TypeType typeType = (TypeType)((LocalVariableDeclarationStatement) nodeToFind).getTypeType();
+			VariableDeclarator variableDeclarator = (VariableDeclarator)((LocalVariableDeclarationStatement) nodeToFind).getVariableDeclarator();
+		
+			MyASTVisitor typeTypeVisitor = new MyASTVisitor(node.getType(), typeType.getFirstChild());
+			MyASTVisitor variableDeclaratorVisitor = new MyASTVisitor((VariableDeclarationFragment) node.fragments().get(0), variableDeclarator);
+			
+			this.found = typeTypeVisitor.isFound() && variableDeclaratorVisitor.isFound();
+			
+			this.correspondingNode = node;
+			
+			if(found)
+			{
+				System.out.println("Found match on position: " + node.getStartPosition());
+				System.out.println("Node: " + node);
+			}
+		}	
+		
+		return false;	
+		
+	}
 
 	@Override
 	public boolean visit(ForStatement node) {

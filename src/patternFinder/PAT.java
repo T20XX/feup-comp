@@ -1,6 +1,7 @@
 package patternFinder;
 
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -58,6 +59,46 @@ public class PAT {
 		
 		try {
 			cu = eclipseAST(new String(Files.readAllBytes(Paths.get("input" + FS + JavaFilePath))).toCharArray());
+			startNode = getAST(root);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		ArrayList<BasicNode> rules = startNode.getChildren();
+		
+		for(BasicNode rule : rules){
+			System.out.println("Searching in rule: " + rule.toString());
+			
+			findRule(cu, (Rule) rule);
+		}
+	
+		System.out.println(startNode);
+		
+	}
+	
+	public static void run(InputStream patterns, File javaFile){
+	
+		SimpleNode root = null;
+
+		Parser parser = new Parser(patterns);
+		try {
+			root = parser.Start();
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+			return;
+		}
+		
+		root.dump("");
+			
+		CompilationUnit cu = null;
+		BasicNode startNode = null;
+		
+		try {
+			cu = eclipseAST(new String(Files.readAllBytes(javaFile.toPath())).toCharArray());
 			startNode = getAST(root);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
