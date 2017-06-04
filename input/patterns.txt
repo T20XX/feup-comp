@@ -3,5 +3,10 @@
 int variavel;
 int edf;
 
+@@
+
+@@r2
+
+int a;
 
 @@

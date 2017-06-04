@@ -23,12 +23,15 @@ public class OutputWindow
     private Highlighter.HighlightPainter redPainter;
     private Highlighter.HighlightPainter orangePainter;
     private Highlighter.HighlightPainter cyanPainter;   
-    private Highlighter.HighlightPainter greenPainter; 
+    private Highlighter.HighlightPainter greenPainter;
 
     private int firstUpdateIndex;
     private int counter;
 
     private Map<Integer, Highlighter.Highlight> highlights = new HashMap<Integer, Highlighter.Highlight>();
+    
+    private ArrayList<Highlighter.HighlightPainter> painters;
+    private static int painterCounter = 0;
 
     public OutputWindow()
     {
@@ -36,12 +39,18 @@ public class OutputWindow
         orangePainter = new DefaultHighlighter.DefaultHighlightPainter(Color.ORANGE);
         cyanPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.CYAN);
         greenPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.GREEN);
+        
+        painters = new ArrayList<>();
+        painters.add(redPainter);
+        painters.add(orangePainter);
+        painters.add(cyanPainter);
+        painters.add(greenPainter);
 
         firstUpdateIndex = -1;
         counter = 0;
     }
 
-    public void createAndDisplayGUI(File file, ArrayList<utils.Position> positions)
+    public void createAndDisplayGUI(File file)
     {
         final JFrame frame = new JFrame("Pattern matches");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -72,8 +81,6 @@ public class OutputWindow
         tarea.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(10, 20, 10, 20)));
         tarea.setTabSize(2);
         tarea.setPreferredSize(new Dimension(600, 900));
-      
-        this.highlightPatterns(positions);
        
         JScrollPane scrollPane = new JScrollPane(tarea);
         contentPane.add(scrollPane);
@@ -195,12 +202,17 @@ public class OutputWindow
     		Highlighter highlighter = this.tarea.getHighlighter();
     		
     		try {
-				highlighter.addHighlight(positions.get(i).getBegin(), positions.get(i).getEnd(), this.cyanPainter);
+				highlighter.addHighlight(positions.get(i).getBegin(), positions.get(i).getEnd(), this.painters.get(painterCounter));
+				
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}
     	}
     	
+    	painterCounter++;
+		
+		if(painterCounter ==painters.size())
+			painterCounter = 0;
     	
     }
 }

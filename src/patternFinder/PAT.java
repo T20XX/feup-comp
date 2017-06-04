@@ -114,10 +114,14 @@ public class PAT {
 		
 		ArrayList<BasicNode> rules = startNode.getChildren();
 		
+		OutputWindow outputWindow = new OutputWindow();
+		outputWindow.createAndDisplayGUI(PAT.javaFile);
+		
 		for(BasicNode rule : rules){
 			System.out.println("Searching in rule: " + rule.toString());
 			
-			findRule(cu, (Rule) rule);
+			MyRuleFinder myRuleFinder = findRule(cu, (Rule) rule);
+			outputWindow.highlightPatterns(myRuleFinder.correspondenciesPositions);
 		}
 	
 		System.out.println(startNode);
@@ -143,12 +147,12 @@ public class PAT {
 		
 	}
 	
-	private static void findRule(CompilationUnit cu, Rule rule){
+	private static MyRuleFinder findRule(CompilationUnit cu, Rule rule){
 		
 		if(cu == null)
 		{
 			System.out.println("Given CompilationUnit is null.");
-			return;
+			return null;
 		}
 		
 		MyRuleFinder myRuleFinder = new MyRuleFinder(cu, rule);
@@ -156,7 +160,7 @@ public class PAT {
 		System.out.println("Same order:" + myRuleFinder.verifySameOrder());
 		System.out.println("Same parent:" + myRuleFinder.verifySameParent());
 		
-		createOutputWindow(myRuleFinder.getCorrespondenciesPositions());
+		return myRuleFinder;
 	}
 	
 	
@@ -178,11 +182,4 @@ public class PAT {
 		
 	  }
 	
-	private static void createOutputWindow(ArrayList<Position> positions){
-		
-		OutputWindow outputWindow = new OutputWindow();
-		outputWindow.createAndDisplayGUI(PAT.javaFile, positions);
-		
-	
-	}
 }
