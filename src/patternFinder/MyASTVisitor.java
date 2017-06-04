@@ -273,8 +273,15 @@ public class MyASTVisitor extends ASTVisitor {
 
 	@Override
 	public boolean visit(ConditionalExpression node) {
-		// TODO Auto-generated method stub
-		return false;	}
+		
+		this.found = false;
+		
+		if(this.nodeToFind.getType() == BasicNode.Type.ConditionalExpression){
+			
+		}	
+		
+		return false;
+		}
 
 	@Override
 	public boolean visit(ConstructorInvocation node) {

@@ -19,7 +19,12 @@ public class BasicNode {
 		VariableDeclaratorId,
 		TypeType,
 		PrimitiveType,
-		VariableInitializer;
+		VariableInitializer,
+		ConditionalExpression,
+		IfStatement,
+		ForStatement,
+		WhileStatement,
+		Block;
 	}
 	
 	protected Type type;

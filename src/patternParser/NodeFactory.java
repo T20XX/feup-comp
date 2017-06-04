@@ -50,10 +50,19 @@ public class NodeFactory {
 			
 		case VariableInitializer:
 			return new VariableInitializer(type, value);
+
+		case IfStatement:
+			return new IfStatement(type, value);
+
+		case ConditionalExpression:
+			return new ConditionalExpression(type, value);
+			
+		case Block:
+			return new Block(type, value);
 			
 		}
 		
-		throw new Exception("Missing mathcing case in NodeFactory for type: " + type.toString());
+		throw new Exception("Missing matching case in NodeFactory for type: " + type.toString());
 		
 	}
 
