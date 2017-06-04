@@ -60,6 +60,9 @@ public class NodeFactory {
 		case Block:
 			return new Block(type, value);
 			
+		case ReturnStatement:
+			return new ReturnStatement(type, value);
+			
 		}
 		
 		throw new Exception("Missing matching case in NodeFactory for type: " + type.toString());

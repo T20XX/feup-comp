@@ -24,7 +24,8 @@ public class BasicNode {
 		IfStatement,
 		ForStatement,
 		WhileStatement,
-		Block;
+		Block,
+		ReturnStatement;
 	}
 	
 	protected Type type;

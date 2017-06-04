@@ -521,7 +521,22 @@ public class MyASTVisitor extends ASTVisitor {
 
 	@Override
 	public boolean visit(ReturnStatement node) {
-		// TODO Auto-generated method stub
+		this.found = false;
+
+		if(this.nodeToFind.getType() == BasicNode.Type.ReturnStatement){
+
+			String returnValue = ((patternParser.ReturnStatement) nodeToFind).getReturnValue();
+
+			this.found = node.getExpression().toString().equals(returnValue);
+
+			this.correspondingNode = node;
+
+			if(found)
+			{
+				System.out.println("Found match on position: " + node.getStartPosition());
+				System.out.println("Node: " + node);
+			}
+		}	
 		return false;	}
 
 	@Override
