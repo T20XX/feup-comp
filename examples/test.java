@@ -8,7 +8,7 @@ public class TestSpoon {
 	boolean t = true;
 	char c = 'c';
 
-	public static void main(String[] args) {
+	public static int main(String[] args) {
 
 		int edf = 2;
 		int variavel = 3;
@@ -31,7 +31,13 @@ public class TestSpoon {
 			c = c;
 
 		while(a<1){
-			return;
+			return a;
+		}
+
+		for(int i = 0; i < a; i+=2){
+
+			a = 2;
+
 		}
 		
 	}
