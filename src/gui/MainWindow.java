@@ -1,18 +1,33 @@
 package gui;
 
-import java.awt.*;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.Panel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
-import javax.swing.*;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -20,9 +35,11 @@ import patternFinder.PAT;
 import patternsGrammar.ParseException;
 import utils.MyFileReader;
 
+@SuppressWarnings("serial")
 public class MainWindow extends JFrame implements ActionListener
 {
 	private JTextArea ta;
+	@SuppressWarnings("unused")
 	private int count;
 	private JMenuBar menuBar;
 	private JMenu fileM,editM;

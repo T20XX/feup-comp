@@ -9,15 +9,12 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.StructuralPropertyDescriptor;
 
 import gui.OutputWindow;
 import patternParser.BasicNode;
@@ -25,7 +22,6 @@ import patternParser.Rule;
 import patternsGrammar.ParseException;
 import patternsGrammar.Parser;
 import patternsGrammar.SimpleNode;
-import utils.Position;
 
 public class PAT {
 
@@ -72,14 +68,25 @@ public class PAT {
 		}
 		
 		ArrayList<BasicNode> rules = startNode.getChildren();
+		String[] rulesName = new String[rules.size()]; 
+		boolean[] rulesFound = new boolean[rules.size()];
 		
-		for(BasicNode rule : rules){
-			System.out.println("Searching in rule: " + rule.toString());
+		for(int i= 0; i<rules.size();i++){
+			System.out.println("Searching in rule: " + rules.get(i).toString());
 			
-			findRule(cu, (Rule) rule);
+			MyRuleFinder myRuleFinder = findRule(cu, (Rule) rules.get(i));
+			rulesName[i] = rules.get(i).getValue().substring(2);
+			rulesFound[i] = !myRuleFinder.getCorrespondenciesPositions().isEmpty();
+			
 		}
 	
-		System.out.println(startNode);
+		System.out.println("Finished");
+		System.out.println("Rules Found:");
+		for(int i= 0; i<rules.size();i++){
+			if(rulesFound[i]){
+				System.out.println(rulesName[i]);
+			}
+		}
 		
 	}
 	
@@ -130,6 +137,7 @@ public class PAT {
 	
 	private static CompilationUnit eclipseAST(char[] unit){
 		
+		@SuppressWarnings("deprecation")
 		ASTParser parser = ASTParser.newParser(AST.JLS3); 
 		parser.setKind(ASTParser.K_COMPILATION_UNIT);
 		parser.setSource(unit); // set source
@@ -156,8 +164,8 @@ public class PAT {
 		
 		MyRuleFinder myRuleFinder = new MyRuleFinder(cu, rule);
 		myRuleFinder.search(cu);
-		System.out.println("Same order:" + myRuleFinder.verifySameOrder());
-		System.out.println("Same parent:" + myRuleFinder.verifySameParent());
+		//System.out.println("Same order:" + myRuleFinder.verifySameOrder());
+		//System.out.println("Same parent:" + myRuleFinder.verifySameParent());
 		
 		return myRuleFinder;
 	}

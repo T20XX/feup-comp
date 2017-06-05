@@ -1,5 +1,4 @@
 package patternFinder;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -83,7 +82,6 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclarationStatement;
 import org.eclipse.jdt.core.dom.TypeLiteral;
 import org.eclipse.jdt.core.dom.TypeParameter;
-import org.eclipse.jdt.core.dom.VariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
@@ -92,17 +90,15 @@ import org.eclipse.jdt.core.dom.WildcardType;
 
 import patternParser.BasicNode;
 import patternParser.LocalVariableDeclarationStatement;
-import patternParser.Statement;
 import patternParser.TypeType;
 import patternParser.VariableDeclarator;
-import patternParser.VariableDeclaratorId;
 
 public class MyASTVisitor extends ASTVisitor {
 
 	private BasicNode nodeToFind;
 	private ASTNode correspondingNode;
 	private boolean found;
-	private int position;
+
 	private static HashMap<String,String> currentPatterns = new HashMap<String,String>();
 
 	public MyASTVisitor(ASTNode nodeToSearch, BasicNode nodeToFind) {
@@ -328,6 +324,7 @@ public class MyASTVisitor extends ASTVisitor {
 		if(this.nodeToFind.getType() == BasicNode.Type.Block){
 
 			List<BasicNode> patternStatements = ((patternParser.Block) nodeToFind).getChildren();
+			@SuppressWarnings("unchecked")
 			List<ASTNode> astStatements = node.statements();
 
 			if(patternStatements.size() == astStatements.size()){

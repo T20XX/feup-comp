@@ -1,26 +1,33 @@
 package gui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.BufferedReader;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
-import javax.swing.*;
+import java.util.Map;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.border.Border;
-import javax.swing.text.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
 
 import utils.MyFileReader;
 
+@SuppressWarnings("serial")
 public class OutputWindow extends JFrame
 {
 	private JTextArea tarea;
-	private JComboBox cbox;
-	private JTextField lineField;
-	private String[] colourNames = {"RED", "ORANGE", "CYAN"};
 	private Color[] colours = {Color.RED, Color.ORANGE, Color.CYAN, Color.GREEN};
 
 	private Highlighter.HighlightPainter redPainter;
@@ -28,11 +35,8 @@ public class OutputWindow extends JFrame
 	private Highlighter.HighlightPainter cyanPainter;   
 	private Highlighter.HighlightPainter greenPainter;
 
-	private int firstUpdateIndex;
-	private int counter;
 
 	private Map<Integer, Highlighter.Highlight> highlights = new HashMap<Integer, Highlighter.Highlight>();
-	private Map<String, ArrayList<utils.Position>> positionByRuleName = new HashMap<String, ArrayList<utils.Position>>();
 	private Map<String, Boolean> highlightState = new HashMap<String, Boolean>();
 
 	private ArrayList<Highlighter.HighlightPainter> painters;
@@ -52,9 +56,6 @@ public class OutputWindow extends JFrame
 		painters.add(orangePainter);
 		painters.add(cyanPainter);
 		painters.add(greenPainter);
-
-		firstUpdateIndex = -1;
-		counter = 0;
 	}
 
 	public void createAndDisplayGUI(File file)
@@ -90,21 +91,7 @@ public class OutputWindow extends JFrame
 		setVisible(true);
 	}
 
-	private JPanel getOptionPanel()
-	{
-		JPanel panel = new JPanel();
-		panel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Color.DARK_GRAY, 2), "COLOUR SELECTION"));
-		panel.setLayout(new GridLayout(0, 2, 5, 5));
-
-		JLabel colourLabel = new JLabel("Select One Colour : ");
-		cbox = new JComboBox(colourNames);
-
-		panel.add(colourLabel);
-		panel.add(cbox);
-
-		return panel;
-	}
+	
 
 	public void highlightPatterns(String ruleName, ArrayList<utils.Position> positions){
 		Highlighter.HighlightPainter painter = this.painters.get(painterCounter);
