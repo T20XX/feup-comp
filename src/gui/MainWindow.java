@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -16,6 +17,7 @@ import javax.swing.*;
 import org.apache.commons.io.FilenameUtils;
 
 import patternFinder.PAT;
+import patternsGrammar.ParseException;
 import utils.MyFileReader;
 
 public class MainWindow extends JFrame implements ActionListener
@@ -97,6 +99,20 @@ public class MainWindow extends JFrame implements ActionListener
 
 		syntaxM = new JMenuItem("Syntax");
 		helpM.add(syntaxM);
+		syntaxM.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				String s = "SYNTAX:\n\n" +
+						"Rules:\n" +
+						"@@<ruleName>\n<rule>\n@@";
+				
+				final JFrame parent = new JFrame();
+				JOptionPane.showMessageDialog(parent, s);
+				
+			}
+		});
 
 		pane.add(scpane,BorderLayout.CENTER);
 		pane.add(toolBar,BorderLayout.SOUTH);
@@ -167,7 +183,15 @@ public class MainWindow extends JFrame implements ActionListener
 				InputStream stream = new ByteArrayInputStream(patterns.getBytes(StandardCharsets.UTF_8));
 
 
-				PAT.run(stream, MainWindow.this.javaFile);
+				try {
+					PAT.run(stream, MainWindow.this.javaFile);
+				} catch (ParseException e1) {
+					
+					final JFrame parent = new JFrame();
+					JOptionPane.showMessageDialog(parent, "Bad grammar. Please refer to Help > Syntax.");
+					
+					e1.printStackTrace();
+				}
 			}
 		});
 
@@ -253,6 +277,8 @@ public class MainWindow extends JFrame implements ActionListener
 			ta.selectAll();
 
 	}
+	
+	
 
 	public static void main(String[] args) 
 	{

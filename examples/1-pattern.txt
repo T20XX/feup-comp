@@ -1,0 +1,20 @@
+@@r1
+
+int edf = 2;
+int variavel = 3;
+
+@@
+
+@@r2
+
+int a;
+int b;
+
+@@
+
+@@r3
+
+int b;
+int a;
+
+@@

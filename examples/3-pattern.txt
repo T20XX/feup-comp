@@ -1,0 +1,18 @@
+@@r1
+
+int @a;
+
+@@
+
+@@r2
+
+float s;
+
+@@
+
+@@r3
+
+int@a;
+float p;
+
+@@

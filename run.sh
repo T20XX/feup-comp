@@ -10,4 +10,4 @@ javac -g -d "bin" -cp "lib/*" ./src/**/*.java
 
 #EXECUTE PAT
 echo "Running..."
-java -cp "bin:lib/*" PAT patterns.txt TestSpoon.java
+java -cp "bin:lib/*" gui.MainWindow

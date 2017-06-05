@@ -83,18 +83,15 @@ public class PAT {
 		
 	}
 	
-	public static void run(InputStream patterns, File javaFile){
+	public static void run(InputStream patterns, File javaFile) throws ParseException{
 	
 		SimpleNode root = null;
 		PAT.javaFile = javaFile;
 
-		try {
-			Parser parser = new Parser(patterns);
-			root = parser.Start();
-		} catch (ParseException e1) {
-			e1.printStackTrace();
-			return;
-		}
+		
+		Parser parser = new Parser(patterns);
+		root = parser.Start();
+		
 		
 		root.dump("");
 			
