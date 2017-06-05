@@ -15,4 +15,13 @@ public class VariableDeclaratorId extends Identifier {
 		
 		return null;	
 	}
+	
+	public BasicNode getPattern(){
+		for (BasicNode basicNode : children) {
+			if(basicNode.type == BasicNode.Type.Pattern)
+				return basicNode;
+		}
+		
+		return null;
+	}
 }
