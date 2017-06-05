@@ -12,7 +12,7 @@ public class TestSpoon {
 		
 		int a = 1;
 		int b = 2;
-		a = 0;
+		a += 0;
 		int c = 0;
 		
 		if (a < b) {

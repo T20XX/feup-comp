@@ -71,10 +71,12 @@ public class MyRuleFinder {
 					for(Position p : tmpPositions){
 						this.correspondenciesPositions.add(p);
 					}
+					tmpPositions = new ArrayList<Position>();
+					MyASTVisitor.clearCurrentPatterns();
 					nodeCounter = 0;
 					i = astNodeCounter;
 				}
-			}else if(nodeCounter == 0 || (nodes.size() - i < this.rulePatterns.size() - nodeCounter)){
+			}else if(nodeCounter == 0 || (nodes.size() - i <= this.rulePatterns.size() - nodeCounter)){
 				nodeCounter = 0;
 				tmpPositions = new ArrayList<Position>();
 				MyASTVisitor.clearCurrentPatterns();

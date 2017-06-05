@@ -174,33 +174,51 @@ public class MyASTVisitor extends ASTVisitor {
 
 	public boolean visit(VariableDeclarationFragment node)
 	{
-		//System.out.println("Visited VariableDeclarationF");
 		this.found = false;
-		if(this.nodeToFind.getType() == BasicNode.Type.VariableDeclarator)
-		{
-			VariableDeclaratorId variableDeclaratorId = (VariableDeclaratorId) ((VariableDeclarator) nodeToFind).getVariableDeclaratorId();
-			if(variableDeclaratorId.getPattern() != null){
-				String pattern = variableDeclaratorId.getPattern().getValue();
-				System.out.println("PATTERN: " + pattern);
-				if(currentPatterns.get(pattern) == null){
-					System.out.println("AINDA NAO HAVIA NENHUM: " + pattern + "->" + node.getName().toString());
-					currentPatterns.put(pattern, node.getName().toString());
-					this.found = true;
+
+		if(this.nodeToFind.getType() == BasicNode.Type.VariableDeclarator){
+
+			String leftOperand = ((patternParser.VariableDeclarator) nodeToFind).getLeftOperand();
+			String rightOperand = ((patternParser.VariableDeclarator) nodeToFind).getRightOperand();
+			//PATTERNS
+			if(((patternParser.VariableDeclarator) nodeToFind).leftOperandIsPattern()){
+				System.out.println("PATTERN: " + leftOperand);
+				if(currentPatterns.get(leftOperand) == null){
+					System.out.println("AINDA NAO HAVIA NENHUM: " + leftOperand + "->" + node.getName().toString());
+					currentPatterns.put(leftOperand, node.getName().toString());
+					leftOperand = node.getName().toString();
 				}else{
-					System.out.println("JA HAVIA E ERA: " + pattern + "->" + currentPatterns.get(pattern));
-					if(node.getName().toString().equals(currentPatterns.get(pattern))){				
-						this.found = true;
-					}
-				}
-			}else{
-				if(node.getName().toString().equals(variableDeclaratorId.getIdentifier().getValue()))
-				{				
-					this.found = true;
+					System.out.println("JA HAVIA E ERA: " + leftOperand + "->" + currentPatterns.get(leftOperand));
+					leftOperand = currentPatterns.get(leftOperand);
 				}
 			}
-		}
+			/*if(((patternParser.VariableDeclarator) nodeToFind).rightOperandIsPattern()){
+				System.out.println("PATTERN: " + rightOperand);
+				if(currentPatterns.get(rightOperand) == null){
+					System.out.println("AINDA NAO HAVIA NENHUM: " + rightOperand + "->" + node.getInitializer().toString());
+					currentPatterns.put(rightOperand, node.getInitializer().toString());
+					rightOperand = node.getInitializer().toString();
+				}else{
+					System.out.println("JA HAVIA E ERA: " + rightOperand + "->" + currentPatterns.get(rightOperand));
+					rightOperand = currentPatterns.get(rightOperand);
+				}
+			}*/
 
-		return false;
+
+			if(node.getName().toString().equals(leftOperand)){// &&
+					//node.getInitializer().toString().equals(rightOperand)){
+				this.found = true;
+				this.correspondingNode = node;
+			}
+			this.correspondingNode = node;
+
+			if(found)
+			{
+				System.out.println("Found assignment match on position: " + node.getStartPosition());
+				System.out.println("Node: " + node);
+			}
+		}	
+		return false;	
 	}
 
 
@@ -250,16 +268,16 @@ public class MyASTVisitor extends ASTVisitor {
 
 	@Override
 	public boolean visit(Assignment node) {
-		/*this.found = false;
+		this.found = false;
 
 		if(this.nodeToFind.getType() == BasicNode.Type.VariableDeclarator){
 
-			Assignment.Operator operator = Assignment.Operator.toOperator(((patternParser.ConditionalExpression) nodeToFind).getOperator());
-			String leftOperand = ((patternParser.ConditionalExpression) nodeToFind).getLeftOperand();
-			String rightOperand = ((patternParser.ConditionalExpression) nodeToFind).getRightOperand();
-
+			Assignment.Operator operator = Assignment.Operator.toOperator(((patternParser.VariableDeclarator) nodeToFind).getOperator());
+			String leftOperand = ((patternParser.VariableDeclarator) nodeToFind).getLeftOperand();
+			String rightOperand = ((patternParser.VariableDeclarator) nodeToFind).getRightOperand();
+			System.out.println("ASSIGNMENT: " + leftOperand + operator + rightOperand);
 			//PATTERNS
-			if(((patternParser.ConditionalExpression) nodeToFind).leftOperandIsPattern()){
+			if(((patternParser.VariableDeclarator) nodeToFind).leftOperandIsPattern()){
 				System.out.println("PATTERN: " + leftOperand);
 				if(currentPatterns.get(leftOperand) == null){
 					System.out.println("AINDA NAO HAVIA NENHUM: " + leftOperand + "->" + node.getLeftHandSide().toString());
@@ -270,7 +288,7 @@ public class MyASTVisitor extends ASTVisitor {
 					leftOperand = currentPatterns.get(leftOperand);
 				}
 			}
-			if(((patternParser.ConditionalExpression) nodeToFind).rightOperandIsPattern()){
+			if(((patternParser.VariableDeclarator) nodeToFind).rightOperandIsPattern()){
 				System.out.println("PATTERN: " + rightOperand);
 				if(currentPatterns.get(rightOperand) == null){
 					System.out.println("AINDA NAO HAVIA NENHUM: " + rightOperand + "->" + node.getRightHandSide().toString());
@@ -289,13 +307,14 @@ public class MyASTVisitor extends ASTVisitor {
 				this.found = true;
 				this.correspondingNode = node;
 			}
+			this.correspondingNode = node;
 
 			if(found)
 			{
-				System.out.println("Found conditionalExpression match on position: " + node.getStartPosition());
+				System.out.println("Found assignment match on position: " + node.getStartPosition());
 				System.out.println("Node: " + node);
 			}
-		}	*/
+		}	
 		return false;	}
 
 	@Override
@@ -412,7 +431,10 @@ public class MyASTVisitor extends ASTVisitor {
 
 	@Override
 	public boolean visit(ExpressionStatement node) {
-		// TODO Auto-generated method stub
+		MyASTVisitor tmpVisitor = new MyASTVisitor(node.getExpression(), this.nodeToFind.getFirstChild());
+		
+		this.found = tmpVisitor.isFound();
+
 		return false;	}
 
 	@Override

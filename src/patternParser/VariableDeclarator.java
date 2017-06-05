@@ -40,7 +40,7 @@ public class VariableDeclarator extends BasicNode {
 	
 	public boolean leftOperandIsPattern(){
         for (BasicNode basicNode : children) {
-            if(basicNode.type == BasicNode.Type.Primary)
+            if(basicNode.type == BasicNode.Type.VariableDeclaratorId)
                 return basicNode.getFirstChild().type == BasicNode.Type.Pattern;
         }
         return false;
