@@ -1,6 +1,6 @@
 # Project Title: PAT
 
-## Group
+## Group: G8
 
 NAME1: João Filipe Costa, NR1: up201403967, GRADE1: 20, CONTRIBUTION1: 33.3%
 NAME2: José Aleixo Cruz, NR2: up201403526, GRADE2: 19, CONTRIBUTION2: 33.3%
