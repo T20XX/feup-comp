@@ -227,5 +227,5 @@ void ForUpdate() : {}
 
 void ForStatement() : {}
 {
-  	< FOR > "(" [ForInit()] ";" [ConditionalExpression()] ";" [ForUpdate()] ")" Statement()
+  	< FOR > "(" [LocalVariableDeclarationStatement()] ";" [ConditionalExpression()] ";" [VariableDeclarator()] ")" Statement()
 }

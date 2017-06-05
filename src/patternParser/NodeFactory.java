@@ -54,6 +54,9 @@ public class NodeFactory {
 		case IfStatement:
 			return new IfStatement(type, value);
 			
+		case ForStatement:
+			return new ForStatement(type, value);
+			
 		case WhileStatement:
 			return new WhileStatement(type, value);
 

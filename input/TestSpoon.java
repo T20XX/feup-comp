@@ -29,6 +29,9 @@ public class TestSpoon {
 		while(a<1){
 			return;
 		}
+		for(int i = 0; i < a; i++){
+			return a;
+		}
 		
 	}
 }

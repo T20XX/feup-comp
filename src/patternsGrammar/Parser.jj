@@ -808,7 +808,7 @@ void ForStatement() : {/*@bgen(jjtree) ForStatement */
 {/*@bgen(jjtree) ForStatement */
         try {
 /*@egen*/
-  	< FOR > "(" [ForInit()] ";" [ConditionalExpression()] ";" [ForUpdate()] ")" Statement()/*@bgen(jjtree)*/
+  	< FOR > "(" [LocalVariableDeclarationStatement()] ";" [ConditionalExpression()] ";" [VariableDeclarator()] ")" Statement()/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
