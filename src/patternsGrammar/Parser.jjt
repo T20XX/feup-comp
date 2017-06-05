@@ -154,7 +154,7 @@ void VariableDeclarator() : {Token t;}
   VariableDeclaratorId()
 
   [
-  	(t=< ASSIGNMENT_OPERATOR >{ jjtThis.value = t.image; } VariableInitializer()) |
+  	(t=< ASSIGNMENT_OPERATOR >{ jjtThis.value = t.image; } Expression()) |
   	t=< POSTFIX_OPERATOR >{ jjtThis.value = t.image; }
   ]
 

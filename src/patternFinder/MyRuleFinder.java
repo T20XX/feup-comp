@@ -75,6 +75,11 @@ public class MyRuleFinder {
 					i = astNodeCounter;
 				}
 			}else if(nodeCounter == 0 || (nodes.size() - i < this.rulePatterns.size() - nodeCounter)){
+				nodeCounter = 0;
+				tmpPositions = new ArrayList<Position>();
+				MyASTVisitor.clearCurrentPatterns();
+				this.ruleFulfiflled = false;
+				
 				search(nodes.get(i));
 			}else if(nodeCounter >= 1){
 				nodeCounter = 0;

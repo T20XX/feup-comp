@@ -15,23 +15,44 @@ public class VariableDeclarator extends BasicNode {
 		
 		return null;
 	}
+
+	public String getLeftOperand(){
+        for (BasicNode basicNode : children) {
+            if(basicNode.type == BasicNode.Type.VariableDeclaratorId)
+                return basicNode.getFirstChild().getValue();
+        }
+        
+        return null;
+    }
 	
-	public String getOperand(){
-		for (BasicNode basicNode : children) {
-			if(basicNode.type == BasicNode.Type.VariableDeclaratorId)
-				return basicNode.getFirstChild().value;
-		}
-		
-		return null;
+	public String getRightOperand(){
+        for (BasicNode basicNode : children) {
+            if(basicNode.type == BasicNode.Type.Expression)
+                return basicNode.getFirstChild().getFirstChild().getValue();
+        }
+        
+        return null;
+    }
+	
+	public String getOperator(){
+		return value;
 	}
-
-	public boolean operandIsPattern() {
-		for (BasicNode basicNode : children) {
-			if(basicNode.type == BasicNode.Type.VariableDeclaratorId)
-				return basicNode.getFirstChild().type == BasicNode.Type.Pattern;
-		}
-		return false;
-	}
-
+	
+	public boolean leftOperandIsPattern(){
+        for (BasicNode basicNode : children) {
+            if(basicNode.type == BasicNode.Type.Primary)
+                return basicNode.getFirstChild().type == BasicNode.Type.Pattern;
+        }
+        return false;
+    }
+	
+	public boolean rightOperandIsPattern(){
+        for (BasicNode basicNode : children) {
+            if(basicNode.type == BasicNode.Type.Expression)
+                return basicNode.getFirstChild().getFirstChild().type == BasicNode.Type.Pattern;
+        }
+        return false;
+    }
+	
 
 }

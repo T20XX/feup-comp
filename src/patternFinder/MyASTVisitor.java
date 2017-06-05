@@ -244,7 +244,52 @@ public class MyASTVisitor extends ASTVisitor {
 
 	@Override
 	public boolean visit(Assignment node) {
-		// TODO Auto-generated method stub
+		/*this.found = false;
+
+		if(this.nodeToFind.getType() == BasicNode.Type.VariableDeclarator){
+
+			Assignment.Operator operator = Assignment.Operator.toOperator(((patternParser.ConditionalExpression) nodeToFind).getOperator());
+			String leftOperand = ((patternParser.ConditionalExpression) nodeToFind).getLeftOperand();
+			String rightOperand = ((patternParser.ConditionalExpression) nodeToFind).getRightOperand();
+
+			//PATTERNS
+			if(((patternParser.ConditionalExpression) nodeToFind).leftOperandIsPattern()){
+				System.out.println("PATTERN: " + leftOperand);
+				if(currentPatterns.get(leftOperand) == null){
+					System.out.println("AINDA NAO HAVIA NENHUM: " + leftOperand + "->" + node.getLeftHandSide().toString());
+					currentPatterns.put(leftOperand, node.getLeftHandSide().toString());
+					this.found = true;
+				}else{
+					System.out.println("JA HAVIA E ERA: " + leftOperand + "->" + currentPatterns.get(leftOperand));
+					leftOperand = currentPatterns.get(leftOperand);
+				}
+			}
+			if(((patternParser.ConditionalExpression) nodeToFind).rightOperandIsPattern()){
+				System.out.println("PATTERN: " + rightOperand);
+				if(currentPatterns.get(rightOperand) == null){
+					System.out.println("AINDA NAO HAVIA NENHUM: " + rightOperand + "->" + node.getRightHandSide().toString());
+					currentPatterns.put(rightOperand, node.getRightHandSide().toString());
+					this.found = true;
+				}else{
+					System.out.println("JA HAVIA E ERA: " + rightOperand + "->" + currentPatterns.get(rightOperand));
+					rightOperand = currentPatterns.get(rightOperand);
+				}
+			}
+
+
+			if(node.getLeftHandSide().toString().equals(leftOperand) &&
+					node.getOperator()== operator &&
+					node.getRightHandSide().toString().equals(rightOperand)){
+				this.found = true;
+				this.correspondingNode = node;
+			}
+
+			if(found)
+			{
+				System.out.println("Found conditionalExpression match on position: " + node.getStartPosition());
+				System.out.println("Node: " + node);
+			}
+		}	*/
 		return false;	}
 
 	@Override
@@ -613,10 +658,10 @@ public class MyASTVisitor extends ASTVisitor {
 		if(this.nodeToFind.getType() == BasicNode.Type.VariableDeclarator){
 
 			PostfixExpression.Operator operator = PostfixExpression.Operator.toOperator(((patternParser.VariableDeclarator) nodeToFind).getValue());
-			String operand = ((patternParser.VariableDeclarator) nodeToFind).getOperand();
+			String operand = ((patternParser.VariableDeclarator) nodeToFind).getLeftOperand();
 
 			//PATTERNS
-			if(((patternParser.VariableDeclarator) nodeToFind).operandIsPattern()){
+			if(((patternParser.VariableDeclarator) nodeToFind).leftOperandIsPattern()){
 				System.out.println("PATTERN: " + operand);
 				if(currentPatterns.get(operand) == null){
 					System.out.println("AINDA NAO HAVIA NENHUM: " + operand + "->" + node.getOperand().toString());

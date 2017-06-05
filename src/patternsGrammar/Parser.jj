@@ -460,7 +460,7 @@ void VariableDeclarator() : {/*@bgen(jjtree) VariableDeclarator */
   VariableDeclaratorId()
 
   [
-  	(t=< ASSIGNMENT_OPERATOR >{ jjtn000.value = t.image; } VariableInitializer()) |
+  	(t=< ASSIGNMENT_OPERATOR >{ jjtn000.value = t.image; } Expression()) |
   	t=< POSTFIX_OPERATOR >{ jjtn000.value = t.image; }
   ]/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
