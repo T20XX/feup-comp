@@ -27,7 +27,7 @@ public class TestSpoon {
 			c = c;
 
 		while(a<1){
-			return a;
+			return;
 		}
 		
 	}

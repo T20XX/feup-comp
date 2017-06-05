@@ -3,7 +3,7 @@
  */
 options
 {
-  static = true;
+  static = false;
   NODE_CLASS = "BetterNode";
 }
 

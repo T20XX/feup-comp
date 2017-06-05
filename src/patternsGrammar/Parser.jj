@@ -4,7 +4,7 @@
  */
 options
 {
-  static = true;
+  static = false;
                             
 }
 
@@ -17,7 +17,7 @@ import java.io.FileNotFoundException;
 
 public class Parser/*@bgen(jjtree)*/implements ParserTreeConstants/*@egen*/
 {/*@bgen(jjtree)*/
-  protected static JJTParserState jjtree = new JJTParserState();
+  protected JJTParserState jjtree = new JJTParserState();
 
 /*@egen*/
   public static void main(String args []) throws ParseException, FileNotFoundException

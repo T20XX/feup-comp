@@ -47,7 +47,7 @@ public class PAT {
 		if(args.length > 0)
 			try {
 				input = new FileInputStream("input" + FS + DSLFilePath);
-
+				
 				Parser parser = new Parser(input);
 				root = parser.Start();
 				root.dump("");
@@ -88,8 +88,8 @@ public class PAT {
 		SimpleNode root = null;
 		PAT.javaFile = javaFile;
 
-		Parser parser = new Parser(patterns);
 		try {
+			Parser parser = new Parser(patterns);
 			root = parser.Start();
 		} catch (ParseException e1) {
 			e1.printStackTrace();
@@ -125,7 +125,8 @@ public class PAT {
 			outputWindow.highlightPatterns(ruleName, myRuleFinder.getCorrespondenciesPositions());
 		}
 	
-		System.out.println(startNode);
+		System.out.println("Finished");
+		
 		
 	}
 		

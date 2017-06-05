@@ -66,9 +66,8 @@ public class MainWindow extends JFrame implements ActionListener
 		loadI = new JMenuItem("Load");
 		toolBar = new JToolBar();
 
-		// TODO: uncomment
-		//textLineNumber = new TextLineNumber(ta);
-		//scpane.setRowHeaderView(textLineNumber);
+		textLineNumber = new TextLineNumber(ta);
+		scpane.setRowHeaderView(textLineNumber);
 
 		ta.setLineWrap(true);
 		ta.setWrapStyleWord(true);
@@ -169,7 +168,6 @@ public class MainWindow extends JFrame implements ActionListener
 
 
 				PAT.run(stream, MainWindow.this.javaFile);
-
 			}
 		});
 
