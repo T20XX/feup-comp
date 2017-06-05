@@ -6,4 +6,13 @@ public class Primary extends BasicNode {
 		super(type, value);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public BasicNode getPattern(){
+		for (BasicNode basicNode : children) {
+			if(basicNode.type == BasicNode.Type.Pattern)
+				return basicNode;
+		}
+		
+		return null;
+	}
 }

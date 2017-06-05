@@ -122,7 +122,7 @@ public class PAT {
 			
 			MyRuleFinder myRuleFinder = findRule(cu, (Rule) rule);
 			String ruleName = rule.getValue().substring(2);
-			outputWindow.highlightPatterns(ruleName, myRuleFinder.correspondenciesPositions);
+			outputWindow.highlightPatterns(ruleName, myRuleFinder.getCorrespondenciesPositions());
 		}
 	
 		System.out.println(startNode);

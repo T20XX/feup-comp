@@ -17,11 +17,13 @@ import utils.Position;
 
 public class MyRuleFinder {
 	
-	CompilationUnit rootCu;
-	Rule rule;
-	ArrayList<BasicNode> rulePatterns;
-	Map<BasicNode, MyASTVisitor> correspondencies;
-	ArrayList<Position> correspondenciesPositions;
+	private CompilationUnit rootCu;
+	private Rule rule;
+	private ArrayList<BasicNode> rulePatterns;
+	private Map<BasicNode, MyASTVisitor> correspondencies;
+	private ArrayList<Position> correspondenciesPositions;
+	
+	private boolean ruleFulfiflled;
 	
 	public MyRuleFinder(CompilationUnit rootCu, Rule rule) {
 		
@@ -32,6 +34,8 @@ public class MyRuleFinder {
 		
 		this.correspondencies = new HashMap<>();
 		this.correspondenciesPositions = new ArrayList<>();
+		
+		this.ruleFulfiflled = true;
 	}
 	
 	public void search(ASTNode parentNode){
@@ -55,7 +59,11 @@ public class MyRuleFinder {
 					
 					Position pos = new Position(beginPos, endPos);
 					
-					this.correspondenciesPositions.add(pos);
+					this.correspondenciesPositions.add(pos); 
+				}
+				else
+				{
+					this.ruleFulfiflled = false;
 				}
 				
 			}
@@ -85,7 +93,6 @@ public class MyRuleFinder {
 	
 	public boolean verifySameOrder(){
 		
-	
 		int currentPosition = -1;
 		
 		for(BasicNode pattern : this.rulePatterns){
@@ -135,6 +142,27 @@ public class MyRuleFinder {
 	public ArrayList<Position> getCorrespondenciesPositions() {
 		return correspondenciesPositions;
 	}
+
+	public CompilationUnit getRootCu() {
+		return rootCu;
+	}
+
+	public Rule getRule() {
+		return rule;
+	}
+
+	public ArrayList<BasicNode> getRulePatterns() {
+		return rulePatterns;
+	}
+
+	public Map<BasicNode, MyASTVisitor> getCorrespondencies() {
+		return correspondencies;
+	}
+
+	public boolean isRuleFulfiflled() {
+		return ruleFulfiflled;
+	}
+	
 	
 	
 }
