@@ -40,42 +40,52 @@ public class MyRuleFinder {
 	}
 
 	public void search(ASTNode parentNode){
-
+		List<ASTNode> nodes = getASTNodeChildren(parentNode);
+		int astNodeCounter = 0;
+		ArrayList<Position> tmpPositions = new ArrayList<Position>();
 		// Search on every node of the java code
-		for(ASTNode node : getASTNodeChildren(parentNode)){
+		for(int i = 0; i < getASTNodeChildren(parentNode).size(); i++){
 
-			System.out.println("Node: " + node);
-			System.out.println("Node type: " + node.getNodeType());
+			System.out.println("Node: " + nodes.get(i));
+			System.out.println("Node type: " + nodes.get(i).getNodeType());
 
 			// Search for all the pattern nodes
 			//for(BasicNode pattern : this.rulePatterns){
-			if(this.rulePatterns.size() != nodeCounter){
-				MyASTVisitor myASTVisitor = new MyASTVisitor(node, this.rulePatterns.get(nodeCounter));
 
-				if(myASTVisitor.isFound()){
-					this.correspondencies.put(this.rulePatterns.get(nodeCounter), myASTVisitor);
+			MyASTVisitor myASTVisitor = new MyASTVisitor(nodes.get(i), this.rulePatterns.get(nodeCounter));
 
-					int beginPos = myASTVisitor.getCorrespondingNode().getStartPosition();
-					int endPos = beginPos + myASTVisitor.getCorrespondingNode().getLength();
-
-					Position pos = new Position(beginPos, endPos);
-
-					this.correspondenciesPositions.add(pos);
-					nodeCounter++;
+			if(myASTVisitor.isFound()){
+				if(nodeCounter == 0){
+					astNodeCounter = i;
 				}
-				else
-				{
+				this.correspondencies.put(this.rulePatterns.get(nodeCounter), myASTVisitor);
+
+				int beginPos = myASTVisitor.getCorrespondingNode().getStartPosition();
+				int endPos = beginPos + myASTVisitor.getCorrespondingNode().getLength();
+
+				Position pos = new Position(beginPos, endPos);
+
+				tmpPositions.add(pos);
+				nodeCounter++;
+				if(this.rulePatterns.size() == nodeCounter){
+					for(Position p : tmpPositions){
+						this.correspondenciesPositions.add(p);
+					}
 					nodeCounter = 0;
-					MyASTVisitor.clearCurrentPatterns();
-					this.ruleFulfiflled = false;
-
-					search(node);
+					i = astNodeCounter;
 				}
-
-				System.out.println("COUNTER VAI A " + nodeCounter);
-			}else{
+			}else if(nodeCounter == 0 || (nodes.size() - i < this.rulePatterns.size() - nodeCounter)){
+				search(nodes.get(i));
+			}else if(nodeCounter >= 1){
 				nodeCounter = 0;
+				tmpPositions = new ArrayList<Position>();
+				MyASTVisitor.clearCurrentPatterns();
+				this.ruleFulfiflled = false;
+				i = astNodeCounter;
 			}
+
+			System.out.println("COUNTER VAI A " + nodeCounter);
+
 
 			//}
 
