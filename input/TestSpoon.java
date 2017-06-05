@@ -15,7 +15,7 @@ public class TestSpoon {
 
 		int c = 0;
 		
-		if (a < 1) {
+		if (a < b) {
 			
 			c = b;
 
@@ -26,5 +26,9 @@ public class TestSpoon {
 		if (a > b)
 			c = c;
 
+		while(a<1){
+			return a;
+		}
+		
 	}
 }

@@ -1,4 +1,7 @@
 package patternFinder;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.AnnotationTypeDeclaration;
@@ -88,6 +91,7 @@ import org.eclipse.jdt.core.dom.WildcardType;
 
 import patternParser.BasicNode;
 import patternParser.LocalVariableDeclarationStatement;
+import patternParser.Statement;
 import patternParser.TypeType;
 import patternParser.VariableDeclarator;
 import patternParser.VariableDeclaratorId;
@@ -228,7 +232,33 @@ public class MyASTVisitor extends ASTVisitor {
 
 	@Override
 	public boolean visit(Block node) {
-		// TODO Auto-generated method stub
+		this.found = false;
+
+		if(this.nodeToFind.getType() == BasicNode.Type.Block){
+			
+			List<BasicNode> patternStatements = ((patternParser.Block) nodeToFind).getChildren();
+			List<ASTNode> astStatements = node.statements();
+			
+			if(patternStatements.size() == astStatements.size()){
+				this.found=true;
+				for(int i = 0; i <patternStatements.size(); i++){
+					MyASTVisitor tmpVisitor = new MyASTVisitor(astStatements.get(i), patternStatements.get(i));
+					if(!tmpVisitor.isFound()){
+						this.found=false;
+						break;
+					}
+				}
+
+				this.correspondingNode = node;
+
+				if(found)
+				{
+					System.out.println("Found match on position: " + node.getStartPosition());
+					System.out.println("Node: " + node);
+				}
+			}
+			
+		}	
 		return false;	}
 
 	@Override
@@ -360,10 +390,15 @@ public class MyASTVisitor extends ASTVisitor {
 		this.found = false;
 
 		if(this.nodeToFind.getType() == BasicNode.Type.IfStatement){
+			
+			BasicNode thenStatement = nodeToFind.getChildren().get(1);
+			BasicNode elseStatement = nodeToFind.getChildren().get(2);
 
 			MyASTVisitor expressionVisitor = new MyASTVisitor(node.getExpression(), nodeToFind.getFirstChild());
+			MyASTVisitor thenVisitor = new MyASTVisitor(node.getThenStatement(), thenStatement);
+			MyASTVisitor elseVisitor = new MyASTVisitor(node.getElseStatement(), elseStatement);
 
-			this.found = expressionVisitor.isFound();
+			this.found = expressionVisitor.isFound() && thenVisitor.isFound() && elseVisitor.isFound();
 
 			this.correspondingNode = node;
 
@@ -526,6 +561,9 @@ public class MyASTVisitor extends ASTVisitor {
 		if(this.nodeToFind.getType() == BasicNode.Type.ReturnStatement){
 
 			String returnValue = ((patternParser.ReturnStatement) nodeToFind).getReturnValue();
+			
+			System.out.println("RETURN JAVA: " + node.getExpression().toString());
+			System.out.println("RETURN PATTERN: " + returnValue);
 
 			this.found = node.getExpression().toString().equals(returnValue);
 
@@ -646,7 +684,24 @@ public class MyASTVisitor extends ASTVisitor {
 
 	@Override
 	public boolean visit(WhileStatement node) {
-		// TODO Auto-generated method stub
+		this.found = false;
+
+		if(this.nodeToFind.getType() == BasicNode.Type.WhileStatement){
+
+			MyASTVisitor expressionVisitor = new MyASTVisitor(node.getExpression(), nodeToFind.getFirstChild());
+			MyASTVisitor bodyVisitor = new MyASTVisitor(node.getBody(), ((patternParser.WhileStatement) nodeToFind).getBody());
+
+			this.found = expressionVisitor.isFound() && bodyVisitor.isFound();
+
+			this.correspondingNode = node;
+
+			if(found)
+			{
+				System.out.println("Found ifstatement match on position: " + node.getStartPosition());
+				System.out.println("Node: " + node);
+			}
+		}	
+
 		return false;	}
 
 	@Override

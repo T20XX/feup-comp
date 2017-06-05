@@ -8,6 +8,6 @@ public class ReturnStatement extends BasicNode {
 	}
 
 	public String getReturnValue(){
-		return getFirstChild().getValue();
+		return getFirstChild().getFirstChild().getValue();
 	}
 }

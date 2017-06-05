@@ -713,7 +713,7 @@ void WhileStatement() : {/*@bgen(jjtree) WhileStatement */
 {/*@bgen(jjtree) WhileStatement */
         try {
 /*@egen*/
-  	< WHILE > ParExpression() Statement()/*@bgen(jjtree)*/
+  	< WHILE > "(" ConditionalExpression() ")" Statement()/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);

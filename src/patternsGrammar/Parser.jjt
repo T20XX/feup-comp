@@ -210,7 +210,7 @@ void IfStatement() : {}
 
 void WhileStatement() : {}
 {
-  	< WHILE > ParExpression() Statement()
+  	< WHILE > "(" ConditionalExpression() ")" Statement()
   	
 }
 

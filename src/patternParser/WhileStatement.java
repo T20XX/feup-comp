@@ -6,5 +6,9 @@ public class WhileStatement extends BasicNode {
 		super(type, value);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Statement getBody(){
+		return (Statement) this.getChildren().get(1);
+	}
 
 }
