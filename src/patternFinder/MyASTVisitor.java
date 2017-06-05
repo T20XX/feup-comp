@@ -128,14 +128,20 @@ public class MyASTVisitor extends ASTVisitor {
 		this.found = false;
 
 		if(this.nodeToFind.getType() == BasicNode.Type.LocalVariableDeclarationStatement){
-
+			
 			TypeType typeType = (TypeType)((LocalVariableDeclarationStatement) nodeToFind).getTypeType();
 			VariableDeclarator variableDeclarator = (VariableDeclarator)((LocalVariableDeclarationStatement) nodeToFind).getVariableDeclarator();
 
-			MyASTVisitor typeTypeVisitor = new MyASTVisitor(node.getType(), typeType.getFirstChild());
+			
+			
 			MyASTVisitor variableDeclaratorVisitor = new MyASTVisitor((VariableDeclarationFragment) node.fragments().get(0), variableDeclarator);
 
-			this.found = typeTypeVisitor.isFound() && variableDeclaratorVisitor.isFound();
+			this.found = (typeType == null);
+			if(!found){
+				MyASTVisitor typeTypeVisitor = new MyASTVisitor(node.getType(), typeType.getTypeNode());
+				this.found = typeTypeVisitor.isFound();
+			}
+			this.found &= variableDeclaratorVisitor.isFound();
 
 			this.correspondingNode = node;
 
@@ -424,10 +430,14 @@ public class MyASTVisitor extends ASTVisitor {
 			TypeType typeType = (TypeType)((LocalVariableDeclarationStatement) nodeToFind).getTypeType();
 			VariableDeclarator variableDeclarator = (VariableDeclarator)((LocalVariableDeclarationStatement) nodeToFind).getVariableDeclarator();
 
-			MyASTVisitor typeTypeVisitor = new MyASTVisitor(node.getType(), typeType.getFirstChild());
 			MyASTVisitor variableDeclaratorVisitor = new MyASTVisitor((VariableDeclarationFragment) node.fragments().get(0), variableDeclarator);
 
-			this.found = typeTypeVisitor.isFound() && variableDeclaratorVisitor.isFound();
+			this.found = (typeType == null);
+			if(!found){
+				MyASTVisitor typeTypeVisitor = new MyASTVisitor(node.getType(), typeType.getTypeNode());
+				this.found = typeTypeVisitor.isFound();
+			}
+			this.found &= variableDeclaratorVisitor.isFound();
 
 			this.correspondingNode = node;
 
@@ -851,10 +861,14 @@ public class MyASTVisitor extends ASTVisitor {
 			TypeType typeType = (TypeType)((LocalVariableDeclarationStatement) nodeToFind).getTypeType();
 			VariableDeclarator variableDeclarator = (VariableDeclarator)((LocalVariableDeclarationStatement) nodeToFind).getVariableDeclarator();
 
-			MyASTVisitor typeTypeVisitor = new MyASTVisitor(node.getType(), typeType.getFirstChild());
 			MyASTVisitor variableDeclaratorVisitor = new MyASTVisitor((VariableDeclarationFragment) node.fragments().get(0), variableDeclarator);
 
-			this.found = typeTypeVisitor.isFound() && variableDeclaratorVisitor.isFound();
+			this.found = (typeType == null);
+			if(!found){
+				MyASTVisitor typeTypeVisitor = new MyASTVisitor(node.getType(), typeType.getTypeNode());
+				this.found = typeTypeVisitor.isFound();
+			}
+			this.found &= variableDeclaratorVisitor.isFound();
 
 			this.correspondingNode = node;
 
