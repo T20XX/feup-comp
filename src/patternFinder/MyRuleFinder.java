@@ -16,89 +16,100 @@ import patternParser.*;
 import utils.Position;
 
 public class MyRuleFinder {
-	
+
 	private CompilationUnit rootCu;
 	private Rule rule;
 	private ArrayList<BasicNode> rulePatterns;
 	private Map<BasicNode, MyASTVisitor> correspondencies;
 	private ArrayList<Position> correspondenciesPositions;
-	
+
 	private boolean ruleFulfiflled;
-	
+	private int nodeCounter = 0;
+
 	public MyRuleFinder(CompilationUnit rootCu, Rule rule) {
-		
+
 		this.rootCu = rootCu;
 		this.rule = rule;
-		
+
 		this.rulePatterns = rule.getChildren();
-		
+
 		this.correspondencies = new HashMap<>();
 		this.correspondenciesPositions = new ArrayList<>();
-		
+
 		this.ruleFulfiflled = true;
 	}
-	
+
 	public void search(ASTNode parentNode){
-		
+
 		// Search on every node of the java code
 		for(ASTNode node : getASTNodeChildren(parentNode)){
-			
+
 			System.out.println("Node: " + node);
 			System.out.println("Node type: " + node.getNodeType());
-			
+
 			// Search for all the pattern nodes
-			for(BasicNode pattern : this.rulePatterns){
-				
-				MyASTVisitor myASTVisitor = new MyASTVisitor(node, pattern);
-				
+			//for(BasicNode pattern : this.rulePatterns){
+			if(this.rulePatterns.size() != nodeCounter){
+				MyASTVisitor myASTVisitor = new MyASTVisitor(node, this.rulePatterns.get(nodeCounter));
+
 				if(myASTVisitor.isFound()){
-					this.correspondencies.put(pattern, myASTVisitor);
-					
+					this.correspondencies.put(this.rulePatterns.get(nodeCounter), myASTVisitor);
+
 					int beginPos = myASTVisitor.getCorrespondingNode().getStartPosition();
 					int endPos = beginPos + myASTVisitor.getCorrespondingNode().getLength();
-					
+
 					Position pos = new Position(beginPos, endPos);
-					
-					this.correspondenciesPositions.add(pos); 
+
+					this.correspondenciesPositions.add(pos);
+					nodeCounter++;
 				}
 				else
 				{
+					nodeCounter = 0;
+					MyASTVisitor.clearCurrentPatterns();
 					this.ruleFulfiflled = false;
+
+					search(node);
 				}
-				
+
+				System.out.println("COUNTER VAI A " + nodeCounter);
+			}else{
+				nodeCounter = 0;
 			}
-			
-			search(node);
+
+			//}
+
+
 		}	
-		
+
 	}
-	
+
 	public boolean verifySameParent(){
-		
+
 		ASTNode matchingNode = null;
-		
+
 		for(MyASTVisitor successfulVisitor: this.correspondencies.values()){
-			
+
 			if(matchingNode == null)
 				matchingNode = successfulVisitor.getCorrespondingNode().getParent();
-			
+
 			if(successfulVisitor.getCorrespondingNode().getParent() != matchingNode)
 			{
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	public boolean verifySameOrder(){
-		
+
 		int currentPosition = -1;
-		
+
 		for(BasicNode pattern : this.rulePatterns){
-			
+
 			int correspondencePosition = this.correspondencies.get(pattern).getCorrespondingNode().getStartPosition();
-			
+
 			// The position must always be higher than the previous, obeying the order of the list
 			if(correspondencePosition > currentPosition)
 			{
@@ -108,35 +119,35 @@ public class MyRuleFinder {
 			{
 				return false;
 			}
-			
+
 		}
 		return true;
 	}
-	
+
 	public static List<ASTNode> getASTNodeChildren(ASTNode node) {
-	    List<ASTNode> children = new ArrayList<ASTNode>();
-	    
-	    List list = node.structuralPropertiesForType();
-	    
-	    for (int i = 0; i < list.size(); i++) {
-	    	
-	        Object child = node.getStructuralProperty((StructuralPropertyDescriptor)list.get(i));
-	        
-	        if (child instanceof ASTNode) {
-	            children.add((ASTNode) child);
-	        }
-	        else if(child instanceof List){
-	        	
-	        	for(int j = 0; j < ((List) child).size(); j++){
-	        		
-	        		children.add((ASTNode)(((List) child).get(j)));
-	        		
-	        	}
-	        	
-	        }
-	        
-	    }
-	    return children;
+		List<ASTNode> children = new ArrayList<ASTNode>();
+
+		List list = node.structuralPropertiesForType();
+
+		for (int i = 0; i < list.size(); i++) {
+
+			Object child = node.getStructuralProperty((StructuralPropertyDescriptor)list.get(i));
+
+			if (child instanceof ASTNode) {
+				children.add((ASTNode) child);
+			}
+			else if(child instanceof List){
+
+				for(int j = 0; j < ((List) child).size(); j++){
+
+					children.add((ASTNode)(((List) child).get(j)));
+
+				}
+
+			}
+
+		}
+		return children;
 	}
 
 	public ArrayList<Position> getCorrespondenciesPositions() {
@@ -162,7 +173,7 @@ public class MyRuleFinder {
 	public boolean isRuleFulfiflled() {
 		return ruleFulfiflled;
 	}
-	
-	
-	
+
+
+
 }

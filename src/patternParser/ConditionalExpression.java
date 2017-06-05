@@ -28,5 +28,21 @@ public class ConditionalExpression extends BasicNode {
 	public String getOperator(){
 		return value;
 	}
+	
+	public boolean leftOperandIsPattern(){
+        for (BasicNode basicNode : children) {
+            if(basicNode.type == BasicNode.Type.Primary)
+                return basicNode.getFirstChild().type == BasicNode.Type.Pattern;
+        }
+        return false;
+    }
+	
+	public boolean rightOperandIsPattern(){
+        for (BasicNode basicNode : children) {
+            if(basicNode.type == BasicNode.Type.Expression)
+                return basicNode.getFirstChild().getFirstChild().type == BasicNode.Type.Pattern;
+        }
+        return false;
+    }
 
 }

@@ -1,5 +1,6 @@
 package patternFinder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -102,6 +103,7 @@ public class MyASTVisitor extends ASTVisitor {
 	private ASTNode correspondingNode;
 	private boolean found;
 	private int position;
+	private static HashMap<String,String> currentPatterns = new HashMap<String,String>();
 
 	public MyASTVisitor(ASTNode nodeToSearch, BasicNode nodeToFind) {
 		super();
@@ -167,13 +169,28 @@ public class MyASTVisitor extends ASTVisitor {
 	public boolean visit(VariableDeclarationFragment node)
 	{
 		//System.out.println("Visited VariableDeclarationF");
-
+		this.found = false;
 		if(this.nodeToFind.getType() == BasicNode.Type.VariableDeclarator)
 		{
 			VariableDeclaratorId variableDeclaratorId = (VariableDeclaratorId) ((VariableDeclarator) nodeToFind).getVariableDeclaratorId();
-			if(node.getName().toString().equals(variableDeclaratorId.getIdentifier().getValue()))
-			{				
-				this.found = true;
+			if(variableDeclaratorId.getPattern() != null){
+				String pattern = variableDeclaratorId.getPattern().getValue();
+				System.out.println("PATTERN: " + pattern);
+				if(currentPatterns.get(pattern) == null){
+					System.out.println("AINDA NAO HAVIA NENHUM: " + pattern + "->" + node.getName().toString());
+					currentPatterns.put(pattern, node.getName().toString());
+					this.found = true;
+				}else{
+					System.out.println("JA HAVIA E ERA: " + pattern + "->" + currentPatterns.get(pattern));
+					if(node.getName().toString().equals(currentPatterns.get(pattern))){				
+						this.found = true;
+					}
+				}
+			}else{
+				if(node.getName().toString().equals(variableDeclaratorId.getIdentifier().getValue()))
+				{				
+					this.found = true;
+				}
 			}
 		}
 
@@ -235,10 +252,10 @@ public class MyASTVisitor extends ASTVisitor {
 		this.found = false;
 
 		if(this.nodeToFind.getType() == BasicNode.Type.Block){
-			
+
 			List<BasicNode> patternStatements = ((patternParser.Block) nodeToFind).getChildren();
 			List<ASTNode> astStatements = node.statements();
-			
+
 			if(patternStatements.size() == astStatements.size()){
 				this.found=true;
 				for(int i = 0; i <patternStatements.size(); i++){
@@ -257,7 +274,7 @@ public class MyASTVisitor extends ASTVisitor {
 					System.out.println("Node: " + node);
 				}
 			}
-			
+
 		}	
 		return false;	}
 
@@ -390,15 +407,19 @@ public class MyASTVisitor extends ASTVisitor {
 		this.found = false;
 
 		if(this.nodeToFind.getType() == BasicNode.Type.IfStatement){
-			
+
 			BasicNode thenStatement = nodeToFind.getChildren().get(1);
-			BasicNode elseStatement = nodeToFind.getChildren().get(2);
 
 			MyASTVisitor expressionVisitor = new MyASTVisitor(node.getExpression(), nodeToFind.getFirstChild());
 			MyASTVisitor thenVisitor = new MyASTVisitor(node.getThenStatement(), thenStatement);
-			MyASTVisitor elseVisitor = new MyASTVisitor(node.getElseStatement(), elseStatement);
+			if(nodeToFind.getChildren().size()> 2){
+				BasicNode elseStatement = nodeToFind.getChildren().get(2);
+				MyASTVisitor elseVisitor = new MyASTVisitor(node.getElseStatement(), elseStatement);
+				this.found = expressionVisitor.isFound() && thenVisitor.isFound() && elseVisitor.isFound();
+			}else{
+				this.found = expressionVisitor.isFound() && thenVisitor.isFound();
+			}
 
-			this.found = expressionVisitor.isFound() && thenVisitor.isFound() && elseVisitor.isFound();
 
 			this.correspondingNode = node;
 
@@ -421,10 +442,36 @@ public class MyASTVisitor extends ASTVisitor {
 		this.found = false;
 
 		if(this.nodeToFind.getType() == BasicNode.Type.ConditionalExpression){
+			
 			InfixExpression.Operator operator = InfixExpression.Operator.toOperator(((patternParser.ConditionalExpression) nodeToFind).getOperator());
 			String leftOperand = ((patternParser.ConditionalExpression) nodeToFind).getLeftOperand();
 			String rightOperand = ((patternParser.ConditionalExpression) nodeToFind).getRightOperand();
 
+			//PATTERNS
+			if(((patternParser.ConditionalExpression) nodeToFind).leftOperandIsPattern()){
+				System.out.println("PATTERN: " + leftOperand);
+				if(currentPatterns.get(leftOperand) == null){
+					System.out.println("AINDA NAO HAVIA NENHUM: " + leftOperand + "->" + node.getLeftOperand().toString());
+					currentPatterns.put(leftOperand, node.getLeftOperand().toString());
+					this.found = true;
+				}else{
+					System.out.println("JA HAVIA E ERA: " + leftOperand + "->" + currentPatterns.get(leftOperand));
+					leftOperand = currentPatterns.get(leftOperand);
+				}
+			}
+			if(((patternParser.ConditionalExpression) nodeToFind).rightOperandIsPattern()){
+				System.out.println("PATTERN: " + rightOperand);
+				if(currentPatterns.get(rightOperand) == null){
+					System.out.println("AINDA NAO HAVIA NENHUM: " + rightOperand + "->" + node.getRightOperand().toString());
+					currentPatterns.put(rightOperand, node.getRightOperand().toString());
+					this.found = true;
+				}else{
+					System.out.println("JA HAVIA E ERA: " + rightOperand + "->" + currentPatterns.get(rightOperand));
+					rightOperand = currentPatterns.get(rightOperand);
+				}
+			}
+			
+			
 			if(node.getLeftOperand().toString().equals(leftOperand) &&
 					node.getOperator()== operator &&
 					node.getRightOperand().toString().equals(rightOperand)){
@@ -561,11 +608,23 @@ public class MyASTVisitor extends ASTVisitor {
 		if(this.nodeToFind.getType() == BasicNode.Type.ReturnStatement){
 
 			String returnValue = ((patternParser.ReturnStatement) nodeToFind).getReturnValue();
-			
+
 			System.out.println("RETURN JAVA: " + node.getExpression().toString());
 			System.out.println("RETURN PATTERN: " + returnValue);
 
-			this.found = node.getExpression().toString().equals(returnValue);
+			if(((patternParser.ReturnStatement) nodeToFind).returnValueIsPattern()){
+				System.out.println("PATTERN: " + returnValue);
+				if(currentPatterns.get(returnValue) == null){
+					System.out.println("AINDA NAO HAVIA NENHUM: " + returnValue + "->" + node.getExpression().toString());
+					currentPatterns.put(returnValue, node.getExpression().toString());
+					this.found = true;
+				}else{
+					System.out.println("JA HAVIA E ERA: " + returnValue + "->" + currentPatterns.get(returnValue));
+					this.found = node.getExpression().toString().equals(currentPatterns.get(returnValue));
+				}
+			}else{
+				this.found = node.getExpression().toString().equals(returnValue);
+			}
 
 			this.correspondingNode = node;
 
@@ -719,6 +778,10 @@ public class MyASTVisitor extends ASTVisitor {
 
 	public boolean isFound() {
 		return found;
+	}
+
+	public static void clearCurrentPatterns() {
+		currentPatterns = new HashMap<String, String>();
 	}
 
 }

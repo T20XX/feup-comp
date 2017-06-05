@@ -10,4 +10,8 @@ public class ReturnStatement extends BasicNode {
 	public String getReturnValue(){
 		return getFirstChild().getFirstChild().getValue();
 	}
+	
+	public boolean returnValueIsPattern(){
+		return (getFirstChild().getFirstChild().type == BasicNode.Type.Pattern);
+	}
 }
