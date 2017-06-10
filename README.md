@@ -2,9 +2,11 @@
 
 ## Contributors
 
-João Filipe: @filpez
-José Aleixo: @jazzchipc
-Telmo Barros: @T20XX
+João Filipe: [@filpez](https://github.com/filpez)
+
+José Aleixo: [@jazzchipc](https://github.com/jazzchipc)
+
+Telmo Barros: [@T20XX](https://github.com/T20XX)
 
 ## Summary
 
